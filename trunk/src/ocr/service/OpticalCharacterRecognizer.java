@@ -1,6 +1,7 @@
 package ocr.service;
 
 import java.awt.Image;
+import ocr.desktop.ImageDisplayer;
 
 /**
  * Extract characters from an image and convert to a String.
@@ -17,7 +18,7 @@ public class OpticalCharacterRecognizer
     * @return The characters extracted from the image.
     */
    public static String extractString(Image pImage)
-   {
+   {      
       return "Recognized Test";
    }
 }
