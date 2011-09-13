@@ -2,6 +2,7 @@ package ocr.system;
 
 import java.awt.Image;
 import java.io.File;
+import javax.imageio.ImageIO;
 
 /**
  * Reads an image from a given location.
@@ -19,7 +20,7 @@ public class ImageRetriever
     */
    public ImageRetriever(String pPath)
    {
-
+      mPath = new File(pPath);
    }
 
    /**
@@ -30,6 +31,15 @@ public class ImageRetriever
     */
    public Image readImage()
    {
-      return null;
+      Image image = null;
+      try
+      {
+         image = ImageIO.read(mPath);
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
+      return image;
    }
 }
