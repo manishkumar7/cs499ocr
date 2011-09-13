@@ -41,9 +41,11 @@ public class Trainer
     * image. Loop through each character image and prompt the user for a
     * character to identify the image. Store the character with the feature
     * point in the training data.
+    *
+    * @return The string of characters that have been entered by the user.
     */
-   public void go()
+   public String train()
    {
-
+      return "Training test";
    }
 }
