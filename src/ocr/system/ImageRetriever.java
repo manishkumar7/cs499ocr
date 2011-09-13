@@ -8,7 +8,7 @@ import java.io.File;
  *
  * @author Devin
  */
-public class ImageReader
+public class ImageRetriever
 {
    private File mPath;
 
@@ -17,7 +17,7 @@ public class ImageReader
     *
     * @param pPath The path to the image file on the file system
     */
-   public ImageReader(File pPath)
+   public ImageRetriever(String pPath)
    {
 
    }

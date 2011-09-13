@@ -7,7 +7,7 @@ import java.awt.Image;
  * 
  * @author Devin
  */
-public class OCR
+public class OpticalCharacterRecognizer
 {
    /**
     * Extract the characters from the image provided and
@@ -18,6 +18,6 @@ public class OCR
     */
    public static String extractString(Image pImage)
    {
-      return null;
+      return "Recognized Test";
    }
 }
