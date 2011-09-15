@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 /**
  * Displays an Image to the user
@@ -26,7 +27,9 @@ public class ImageDisplayer
          JFrame frame = new JFrame();
          JLabel label = new JLabel(new ImageIcon(pImage));
 
-         frame.getContentPane().add(label, BorderLayout.CENTER);
+         JScrollPane scrollPane = new JScrollPane(label);
+         
+         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
          frame.pack();
          frame.setVisible(true);
       }
