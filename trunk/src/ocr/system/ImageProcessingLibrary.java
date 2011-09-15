@@ -2,6 +2,7 @@ package ocr.system;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 /**
  * Provide common methods needed to process images.
@@ -20,6 +21,9 @@ public class ImageProcessingLibrary
    public static Image threshold(Image pImage)
    {
       int color = 0;
+      int totalPixels = 0;
+      HashMap<Integer, Integer> histogram = new HashMap<Integer, Integer>();
+      
       BufferedImage image = (BufferedImage) pImage;
       int width = image.getWidth();
       int height = image.getHeight();
@@ -36,6 +40,8 @@ public class ImageProcessingLibrary
             //Only focus on rgb
             color = (color & 0x00ffffff) >> 0;
 
+
+            /* TODO: remove this test code
             int threshold = 0x00777777;
 
             if (color > threshold)
@@ -44,9 +50,30 @@ public class ImageProcessingLibrary
             }
             else
             {
-               binary.setRGB(i, j, 0x0);
-               
+               binary.setRGB(i, j, 0x0); 
             }
+             *
+             */
+
+            //
+            // Create a histogram of the pixel intensities
+            //
+
+            //Map pixel intensities to their frequency
+            Integer tally = histogram.get(color);
+
+            //If the intensity has not yet been mapped
+            if (tally == null)
+            {
+               histogram.put(color, 1);
+            }
+            else
+            {
+               histogram.put(color, tally + 1);
+            }
+
+            //Count the total number of pixels
+            totalPixels++;
          }
       }
 
