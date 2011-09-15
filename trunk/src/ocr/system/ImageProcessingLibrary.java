@@ -1,6 +1,7 @@
 package ocr.system;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  * Provide common methods needed to process images.
@@ -18,8 +19,40 @@ public class ImageProcessingLibrary
     */
    public static Image threshold(Image pImage)
    {
-      return null;
+      int color = 0;
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      BufferedImage binary = new BufferedImage(width, height,
+         BufferedImage.TYPE_INT_RGB);
+
+      for (int i = 0; i < width; i++)
+      {
+         for (int j = 0; j < height; j++)
+         {
+            color = image.getRGB(i, j);
+
+            //Only focus on rgb
+            color = (color & 0x00ffffff) >> 0;
+
+            int threshold = 0x00777777;
+
+            if (color > threshold)
+            {
+               binary.setRGB(i, j, 0x00ffffff);
+            }
+            else
+            {
+               binary.setRGB(i, j, 0x0);
+               
+            }
+         }
+      }
+
+      return binary;
    }
+
 
    /**
     * Removes salt-and-pepper noise from the binary image.

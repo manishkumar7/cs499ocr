@@ -56,6 +56,8 @@ public class DesktopOCR extends javax.swing.JFrame
          }
       });
 
+      mImagePathTextField.setText("C:\\test.jpg");
+
       jLabel1.setText("Image location:");
 
       mResultLabel.setText("test");
