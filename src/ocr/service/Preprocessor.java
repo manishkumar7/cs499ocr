@@ -2,6 +2,8 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
+import ocr.desktop.ImageDisplayer;
+import ocr.system.ImageProcessingLibrary;
 
 /**
  * Converts an image into an array of character images.
@@ -19,6 +21,9 @@ public class Preprocessor
     */
    public static Collection<Image> preprocess(Image pImage)
    {
+      //Convert to a binary image
+      Image document = ImageProcessingLibrary.threshold(pImage);
+      
       return null;
    }
 }
