@@ -3,6 +3,7 @@ package ocr.system;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Provide common methods needed to process images.
@@ -22,6 +23,23 @@ public class ImageProcessingLibrary
    {
       int color = 0;
       int totalPixels = 0;
+      double totalThreshold = 0;
+      double totalMean = 0;
+      int backgroundPixels = 0;
+      int foregroundPixels = 0;
+      double backgroundMeanSum = 0;
+      int numPixels = 0;
+      double meanDiff = 0;
+
+      double backgroundMean = 0;
+      double foregroundMean = 0;
+      double backgroundWeight = 0;
+      double foregroundWeight = 0;
+
+      double currVariance = 0;
+      double betweenClassVariance = 0;
+      int threshold = 0;
+      
       HashMap<Integer, Integer> histogram = new HashMap<Integer, Integer>();
       
       BufferedImage image = (BufferedImage) pImage;
@@ -38,22 +56,7 @@ public class ImageProcessingLibrary
             color = image.getRGB(i, j);
 
             //Only focus on rgb
-            color = (color & 0x00ffffff) >> 0;
-
-
-            /* TODO: remove this test code
-            int threshold = 0x00777777;
-
-            if (color > threshold)
-            {
-               binary.setRGB(i, j, 0x00ffffff);
-            }
-            else
-            {
-               binary.setRGB(i, j, 0x0); 
-            }
-             *
-             */
+            color = (color & 0x00ffffff);
 
             //
             // Create a histogram of the pixel intensities
@@ -74,12 +77,65 @@ public class ImageProcessingLibrary
 
             //Count the total number of pixels
             totalPixels++;
+            totalThreshold += color;
+         }
+      }
+      totalMean = totalThreshold / totalPixels;
+
+      List<Integer> keys = HelperLibrary.sortList(histogram.keySet());
+
+      //Loop through each threshold
+      for (Integer currThreshold : keys)
+      {
+         //Calculate background mean and weight
+         numPixels = histogram.get(currThreshold);
+         backgroundPixels += numPixels;
+         backgroundWeight = (double)backgroundPixels / totalPixels;
+
+         backgroundMeanSum += (numPixels * currThreshold);
+         backgroundMean = backgroundMeanSum / backgroundPixels;
+
+         //Calculate foreground mean and weight
+         foregroundPixels = totalPixels - backgroundPixels;
+         foregroundWeight = (double)foregroundPixels / totalPixels;
+         foregroundMean = (totalMean - backgroundMean) / foregroundPixels;
+
+         //Calculate the between class variance
+         meanDiff = backgroundMean - foregroundMean;
+         currVariance = (backgroundWeight * foregroundWeight) * 
+            Math.pow(meanDiff, 2);
+
+         //Maximize between class variance
+         if (currVariance > betweenClassVariance)
+         {
+            betweenClassVariance = currVariance;
+            threshold = currThreshold;
+         }
+      }
+      
+      //Use the calculated threshold to binarize the image
+      for (int i = 0; i < width; i++)
+      {
+         for (int j = 0; j < height; j++)
+         {
+            color = image.getRGB(i, j);
+
+            //Only focus on rgb
+            color = (color & 0x00ffffff);
+
+            if (color > threshold)
+            {
+               binary.setRGB(i, j, 0x00ffffff);
+            }
+            else
+            {
+               binary.setRGB(i, j, 0x0);
+            }
          }
       }
 
       return binary;
    }
-
 
    /**
     * Removes salt-and-pepper noise from the binary image.
