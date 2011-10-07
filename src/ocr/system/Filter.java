@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
  */
 public class Filter
 {
-   static final Integer ON = 0x00ffffff;
-   static final Integer OFF = 0x0;
    Integer mNorth;
    Integer mNorthEast;
    Integer mEast;
@@ -27,18 +25,15 @@ public class Filter
       int height = image.getHeight();
 
       mTargetValue = image.getRGB(pCol, pRow);
-      mTargetValue = (mTargetValue & 0x00ffffff);
 
       if (pRow > 0)
       {
          mNorth = image.getRGB(pCol, pRow - 1);
-         mNorth = (mNorth & 0x00ffffff);
          mNeighborValue = mNorth;
 
          if (pCol < (width - 1))
          {
             mNorthEast = image.getRGB(pCol + 1, pRow - 1);
-            mNorthEast = (mNorthEast & 0x00ffffff);
             mNeighborValue = mNorthEast;
          }
       }
@@ -46,13 +41,11 @@ public class Filter
       if (pCol < (width - 1))
       {
          mEast = image.getRGB(pCol + 1, pRow);
-         mEast = (mEast & 0x00ffffff);
          mNeighborValue = mEast;
 
          if (pRow < (height - 1))
          {
             mSouthEast = image.getRGB(pCol + 1, pRow + 1);
-            mSouthEast = (mSouthEast & 0x00ffffff);
             mNeighborValue = mSouthEast;
          }
       }
@@ -60,7 +53,6 @@ public class Filter
       if (pRow < (height - 1))
       {
          mSouth = image.getRGB(pCol, pRow + 1);
-         mSouth = (mSouth & 0x00ffffff);
          mNeighborValue = mSouth;
       }
    }
@@ -104,12 +96,12 @@ public class Filter
    {
       boolean turnOn = false;
       boolean neighborsSame = neighborsAreSame();
-      if (neighborsSame && (mNeighborValue == ON))
+      if (neighborsSame && (mNeighborValue == ImageProcessingLibrary.ON))
       {
          turnOn = true;
       }
     
-      if (!neighborsSame && (mTargetValue == ON))
+      if (!neighborsSame && (mTargetValue == ImageProcessingLibrary.ON))
       {
          turnOn = true;
       }
