@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class ImageProcessingLibrary
 {
+   static final Integer ON = 0x00ffffff;
+   static final Integer OFF = 0x0;
+
    /**
     * Convert from gray-scale image to a binary image, separating the
     * foreground from the background.
@@ -49,11 +52,11 @@ public class ImageProcessingLibrary
       BufferedImage binary = new BufferedImage(width, height,
          BufferedImage.TYPE_INT_RGB);
 
-      for (int i = 0; i < width; i++)
+      for (int row = 0; row < height; row++)
       {
-         for (int j = 0; j < height; j++)
+         for (int col = 0; col < width; col++)
          {
-            color = image.getRGB(i, j);
+            color = image.getRGB(col, row);
 
             //Only focus on rgb
             color = (color & 0x00ffffff);
@@ -114,22 +117,22 @@ public class ImageProcessingLibrary
       }
       
       //Use the calculated threshold to binarize the image
-      for (int i = 0; i < width; i++)
+      for (int row = 0; row < height; row++)
       {
-         for (int j = 0; j < height; j++)
+         for (int col = 0; col < width; col++)
          {
-            color = image.getRGB(i, j);
+            color = image.getRGB(col, row);
 
             //Only focus on rgb
             color = (color & 0x00ffffff);
 
             if (color > threshold)
             {
-               binary.setRGB(i, j, 0x00ffffff);
+               binary.setRGB(col, row, ON);
             }
             else
             {
-               binary.setRGB(i, j, 0x0);
+               binary.setRGB(col, row, OFF);
             }
          }
       }
@@ -145,7 +148,64 @@ public class ImageProcessingLibrary
     */
    public static Image smoothNoise(Image pImage)
    {
-      return null;
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      BufferedImage binary = new BufferedImage(width, height,
+         BufferedImage.TYPE_INT_RGB);
+      BufferedImage current = new BufferedImage(width, height,
+         BufferedImage.TYPE_INT_RGB);
+
+      Filter pixelFilter = null;
+
+      boolean isChanged = true;
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            Integer val = image.getRGB(col, row);
+            binary.setRGB(col, row, val);
+            current.setRGB(col, row, val);
+         }
+      }
+
+
+      for (int i = 0; i < 1; i++)
+      {
+
+         for (int row = 0; row < height; row++)
+         {
+            for (int col = 0; col < width; col++)
+            {
+               pixelFilter = new Filter(binary, row, col);
+
+               isChanged = false;
+
+               if (pixelFilter.pixelNeedsChanging())
+               {
+
+                  current.setRGB(col, row, ON);
+                  isChanged = true;
+               }
+               else
+               {
+                  current.setRGB(col, row, OFF);
+                  isChanged = true;
+               }
+
+            }
+         }
+
+         for (int row = 0; row < height; row++)
+         {
+            for (int col = 0; col < height; col++)
+            {
+               binary.setRGB(col, row, current.getRGB(col, row));
+            }
+         }
+      }
+      return binary;
    }
 
    /**
