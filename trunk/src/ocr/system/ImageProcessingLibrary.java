@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ImageProcessingLibrary
 {
-   static final Integer ON = 0x00ffffff;
+   static final Integer ON = 0xffffffff;
    static final Integer OFF = 0x0;
 
    /**
@@ -50,7 +50,7 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
 
       BufferedImage binary = new BufferedImage(width, height,
-         BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_BYTE_BINARY);
 
       for (int row = 0; row < height; row++)
       {
@@ -128,6 +128,7 @@ public class ImageProcessingLibrary
 
             if (color > threshold)
             {
+
                binary.setRGB(col, row, ON);
             }
             else
@@ -153,9 +154,9 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
 
       BufferedImage binary = new BufferedImage(width, height,
-         BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_BYTE_BINARY);
       BufferedImage current = new BufferedImage(width, height,
-         BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_BYTE_BINARY);
 
       Filter pixelFilter = null;
 
@@ -182,9 +183,8 @@ public class ImageProcessingLibrary
 
                isChanged = false;
 
-               if (pixelFilter.pixelNeedsChanging())
+               if (pixelFilter.turnOn())
                {
-
                   current.setRGB(col, row, ON);
                   isChanged = true;
                }
@@ -193,7 +193,6 @@ public class ImageProcessingLibrary
                   current.setRGB(col, row, OFF);
                   isChanged = true;
                }
-
             }
          }
 
