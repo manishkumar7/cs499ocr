@@ -15,8 +15,14 @@ public class Filter
    Integer mEast;
    Integer mSouthEast;
    Integer mSouth;
+   Integer mSouthWest;
+   Integer mWest;
+   Integer mNorthWest;
+
    Integer mNeighborValue;
    Integer mTargetValue;
+   Integer mNumberNeighbors;
+   Integer mNumberOn;
 
    public Filter(Image pImage, int pRow, int pCol)
    {
@@ -25,16 +31,30 @@ public class Filter
       int height = image.getHeight();
 
       mTargetValue = image.getRGB(pCol, pRow);
+      mNumberNeighbors = 0;
+      mNumberOn = 0;
 
       if (pRow > 0)
       {
          mNorth = image.getRGB(pCol, pRow - 1);
          mNeighborValue = mNorth;
+         mNumberNeighbors++;
+
+         if (mNorth == ImageProcessingLibrary.ON)
+         {
+            mNumberOn++;
+         }
 
          if (pCol < (width - 1))
          {
             mNorthEast = image.getRGB(pCol + 1, pRow - 1);
             mNeighborValue = mNorthEast;
+            mNumberNeighbors++;
+
+            if (mNorthEast == ImageProcessingLibrary.ON)
+            {
+               mNumberOn++;
+            }
          }
       }
 
@@ -42,11 +62,23 @@ public class Filter
       {
          mEast = image.getRGB(pCol + 1, pRow);
          mNeighborValue = mEast;
+         mNumberNeighbors++;
+
+         if (mEast == ImageProcessingLibrary.ON)
+         {
+            mNumberOn++;
+         }
 
          if (pRow < (height - 1))
          {
             mSouthEast = image.getRGB(pCol + 1, pRow + 1);
             mNeighborValue = mSouthEast;
+            mNumberNeighbors++;
+
+            if (mSouthEast == ImageProcessingLibrary.ON)
+            {
+               mNumberOn++;
+            }
          }
       }
 
@@ -54,7 +86,66 @@ public class Filter
       {
          mSouth = image.getRGB(pCol, pRow + 1);
          mNeighborValue = mSouth;
+         mNumberNeighbors++;
+
+         if (mSouth == ImageProcessingLibrary.ON)
+         {
+            mNumberOn++;
+         }
+
+         if (pCol > (width - 1))
+         {
+            mSouthWest = image.getRGB(pCol - 1, pRow + 1);
+            mNeighborValue = mSouthWest;
+            mNumberNeighbors++;
+
+            if (mSouthWest == ImageProcessingLibrary.ON)
+            {
+               mNumberOn++;
+            }
+         }
       }
+
+      if (pCol > (width - 1))
+      {
+         mWest = image.getRGB(pCol - 1, pRow);
+         mNeighborValue = mWest;
+         mNumberNeighbors++;
+
+         if (mWest == ImageProcessingLibrary.ON)
+         {
+            mNumberOn++;
+         }
+
+         if (pRow > (height - 1))
+         {
+            mNorthWest = image.getRGB(pCol - 1, pRow - 1);
+            mNeighborValue = mNorthWest;
+            mNumberNeighbors++;
+
+            if (mNorthWest == ImageProcessingLibrary.ON)
+            {
+               mNumberOn++;
+            }
+         }
+      }
+   }
+
+   public Integer getMedian()
+   {
+      int median = ImageProcessingLibrary.OFF;
+      int half =  (int) Math.floor(mNumberNeighbors / 2);
+
+      if (mNumberOn == half)
+      {
+         median = mTargetValue;
+      }
+      else if (mNumberOn > half)
+      {
+         median = ImageProcessingLibrary.ON;
+      }
+      
+      return median;
    }
 
    public boolean neighborsAreSame()
