@@ -50,7 +50,7 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
 
       BufferedImage binary = new BufferedImage(width, height,
-         BufferedImage.TYPE_BYTE_BINARY);
+         BufferedImage.TYPE_INT_RGB);
 
       for (int row = 0; row < height; row++)
       {
@@ -154,53 +154,28 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
 
       BufferedImage binary = new BufferedImage(width, height,
-         BufferedImage.TYPE_BYTE_BINARY);
-      BufferedImage current = new BufferedImage(width, height,
-         BufferedImage.TYPE_BYTE_BINARY);
+         BufferedImage.TYPE_INT_RGB);
 
       Filter pixelFilter = null;
 
-      boolean isChanged = true;
       for (int row = 0; row < height; row++)
       {
          for (int col = 0; col < width; col++)
          {
             Integer val = image.getRGB(col, row);
             binary.setRGB(col, row, val);
-            current.setRGB(col, row, val);
          }
       }
 
 
-      for (int i = 0; i < 1; i++)
+      for (int i = 0; i < 2; i++)
       {
-
          for (int row = 0; row < height; row++)
          {
             for (int col = 0; col < width; col++)
             {
                pixelFilter = new Filter(binary, row, col);
-
-               isChanged = false;
-
-               if (pixelFilter.turnOn())
-               {
-                  current.setRGB(col, row, ON);
-                  isChanged = true;
-               }
-               else
-               {
-                  current.setRGB(col, row, OFF);
-                  isChanged = true;
-               }
-            }
-         }
-
-         for (int row = 0; row < height; row++)
-         {
-            for (int col = 0; col < height; col++)
-            {
-               binary.setRGB(col, row, current.getRGB(col, row));
+               binary.setRGB(col, row, pixelFilter.getMedian());
             }
          }
       }

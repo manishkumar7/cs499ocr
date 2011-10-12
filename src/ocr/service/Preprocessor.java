@@ -2,7 +2,6 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
-import ocr.desktop.ImageDisplayer;
 import ocr.system.ImageProcessingLibrary;
 
 /**
