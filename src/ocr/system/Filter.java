@@ -10,20 +10,63 @@ import java.awt.image.BufferedImage;
  */
 public class Filter
 {
+   /**
+    * The north neighbor pixel value
+    */
    Integer mNorth;
+   /**
+    * The north east neighbor pixel value
+    */
    Integer mNorthEast;
+   /**
+    * The east neighbor pixel value
+    */
    Integer mEast;
+   /**
+    * The south east neighbor pixel value
+    */
    Integer mSouthEast;
+   /**
+    * The south neighbor pixel value
+    */
    Integer mSouth;
+   /**
+    * The south west neighbor pixel value
+    */
    Integer mSouthWest;
+   /**
+    * The west neighbor pixel value
+    */
    Integer mWest;
+   /**
+    * The north west neighbor pixel value
+    */
    Integer mNorthWest;
 
+   /**
+    * The value of the neighboring pixels (assuming they are all the same)
+    */
    Integer mNeighborValue;
+   /**
+    * The value of the pixel being filtered
+    */
    Integer mTargetValue;
+   /**
+    * The number of neighboring pixels
+    */
    Integer mNumberNeighbors;
+   /**
+    * The number of neighbor pixels with an ON value
+    */
    Integer mNumberOn;
 
+   /**
+    * Constructor for the Filter.
+    *
+    * @param pImage The binary image containing the target
+    * @param pRow The row location of the target pixel
+    * @param pCol The column location of the target pixel
+    */
    public Filter(Image pImage, int pRow, int pCol)
    {
       BufferedImage image = (BufferedImage) pImage;
@@ -131,6 +174,13 @@ public class Filter
       }
    }
 
+   /**
+    * Returns the median value of the neighbors of the target pixel. If
+    * there are just as many ON pixels are there are OFF then the target
+    * retains its value.
+    *
+    * @return The median of the neighbors
+    */
    public Integer getMedian()
    {
       int median = ImageProcessingLibrary.OFF;
@@ -177,12 +227,23 @@ public class Filter
       return neighborsSame;
    }
 
+   /**
+    * Returns true if the target pixel needs to be changed to the
+    * neighbor's value.
+    *
+    * @return true if the target pixel needs to be changed
+    */
    public boolean pixelNeedsChanging()
    {
       //If the neighbors are the same and the neighbor value is different
       return neighborsAreSame() && (mTargetValue != mNeighborValue);
    }
-   
+
+   /**
+    * Returns true if the target pixel needs to be turned ON.
+    *
+    * @return true if the target pixel needs to be turned ON
+    */
    public boolean turnOn()
    {
       boolean turnOn = false;
@@ -199,6 +260,12 @@ public class Filter
       return turnOn;
    }
 
+   /**
+    * Returns the value of the neighboring pixels, null if they are not all
+    * the same value.
+    *
+    * @return The value of the neighboring pixels
+    */
    public Integer getNeighborValue()
    {
       return mNeighborValue;
