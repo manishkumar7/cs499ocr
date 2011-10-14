@@ -191,8 +191,7 @@ public class ImageProcessingLibrary
     */
    public static Image correctSkew(Image pImage)
    {
-
-      return rotate(pImage, 35);
+      return rotate(pImage, 20);
    }
 
    private static Image rotate(Image pImage, double pAngle)
@@ -200,18 +199,20 @@ public class ImageProcessingLibrary
       double radian = pAngle * (Math.PI / 180);
       double cosAngle = Math.cos(radian);
       double sinAngle = Math.sin(radian);
-      double cosFourtyFive = Math.cos(Math.PI / 4);
+      double absCosAngle = Math.cos(Math.abs(radian));
+      double absSinAngle = Math.sin(Math.abs(radian));
 
       BufferedImage image = (BufferedImage) pImage;
       int width = image.getWidth();
       int height = image.getHeight();
 
-      int targetWidth = (int) Math.abs(Math.ceil((cosFourtyFive * height)
-         + (cosFourtyFive * width))) + 10;
+      //Calculate the size of the target image
+      int targetWidth = (int) Math.abs(Math.ceil((absSinAngle * height)
+         + (absCosAngle * width))) + 500;
 
-      int targetHeight = (int) Math.abs(Math.ceil((cosFourtyFive * height)
-         + (cosFourtyFive * width))) + 10;
-
+      int targetHeight = (int) Math.abs(Math.ceil((absCosAngle * height)
+         + (absSinAngle * width))) + 500;
+      
       BufferedImage target = new BufferedImage(targetWidth, targetHeight,
          BufferedImage.TYPE_INT_RGB);
 
@@ -221,19 +222,19 @@ public class ImageProcessingLibrary
          for (int col = 0; col < targetWidth; col++)
          {
             //Adjust the pivot point so the image is rotated near the center
-            int x = row - (width / 2) - 140;
-            int y = col - (height / 2) - 220;
+            int x = row - (width / 2) - 300;
+            int y = col - (height / 2) - 300;
 
             //Calculate the source location using the rotation matrix
             int xPrime = (int) ((x * cosAngle) + (y * sinAngle) + (width / 2));
             int yPrime = (int) ((x * -sinAngle) + (y * cosAngle) + (height / 2));
 
+            //If the coordinates exist on the source map them to the target
             if ((xPrime >= 0) && (xPrime < height)
                && (yPrime >= 0) && (yPrime < width))
             {
                target.setRGB(col, row, image.getRGB(yPrime, xPrime));
             }
-
          }
       }
 
