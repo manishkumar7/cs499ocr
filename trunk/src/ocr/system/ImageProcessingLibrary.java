@@ -2,6 +2,7 @@ package ocr.system;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -193,15 +194,30 @@ public class ImageProcessingLibrary
    public static Image correctSkew(Image pImage)
    {
       Image correct = null;
+      ArrayList<Double> histogram = null;
       //Test for skew from -90 to 90 degrees
       for (int angle = -90; angle <= 90; angle++)
       {
+         //
+         // Rotate the image, calculate the histogram for each row,
+         // then choose the histogram with the maximum variance
+         //
+
          Image current = rotate(pImage, angle);
+         histogram = (ArrayList<Double>)FeatureExtractionLibrary.yAxisHistogram(
+            current);
       }
-      
+
       return correct;
    }
 
+   /**
+    * Rotates an image by an arbitrary angle (in degrees.)
+    *
+    * @param pImage The image to rotate
+    * @param pAngle The angle to rotate by
+    * @return The rotated image
+    */
    private static Image rotate(Image pImage, double pAngle)
    {
       double radian = pAngle * (Math.PI / 180);
@@ -233,7 +249,12 @@ public class ImageProcessingLibrary
             int x = row - (width / 2) - 300;
             int y = col - (height / 2) - 300;
 
-            //Calculate the source location using the rotation matrix
+            //
+            // Calculate the source location using the rotation matrix
+            //    [x'    =   [ cos(angle)  sin(angle)   *  [x
+            //     y']         -sin(angle) cos(angle)]      y]
+            //
+
             int xPrime = (int) ((x * cosAngle) + (y * sinAngle) + (width / 2));
             int yPrime = (int) ((x * -sinAngle) + (y * cosAngle) + (height / 2));
 
