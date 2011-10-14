@@ -115,7 +115,10 @@ public class ImageProcessingLibrary
             threshold = currThreshold;
          }
       }
-      
+
+      //Adjust the threshold
+      threshold += 7000000;
+
       //Use the calculated threshold to binarize the image
       for (int row = 0; row < height; row++)
       {
@@ -168,7 +171,7 @@ public class ImageProcessingLibrary
       }
 
 
-      for (int i = 0; i < 2; i++)
+      for (int i = 0; i < 1; i++)
       {
          for (int row = 0; row < height; row++)
          {
@@ -190,7 +193,13 @@ public class ImageProcessingLibrary
     * @param pImage The binary image to process.
     * @return The processed image.
     */
-   public static Image correctSkew(Image pImage, double pAngle)
+   public static Image correctSkew(Image pImage)
+   {
+
+      return null;
+   }
+
+   private static Image rotate(Image pImage, double pAngle)
    {
       return null;
    }
