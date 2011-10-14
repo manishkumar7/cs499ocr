@@ -1,6 +1,8 @@
 package ocr.system;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -128,7 +130,19 @@ public class FeatureExtractionLibrary
     */
    public static Collection<Double> xAxisHistogram(Image pImage)
    {
-      return null;
+      ArrayList<Double> histogram = new ArrayList<Double>();
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+
+         }
+      }
+      return histogram;
    }
    
    /**
@@ -139,7 +153,27 @@ public class FeatureExtractionLibrary
     */
    public static Collection<Double> yAxisHistogram(Image pImage)
    {
-      return null;
+      ArrayList<Double> histogram = new ArrayList<Double>();
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      double count = 0;
+
+      for (int row = 0; row < height; row++)
+      {
+         //Count the number of ON pixels in each row
+         count = 0;
+         for (int col = 0; col < width; col++)
+         {
+            if (image.getRGB(col, row) == ImageProcessingLibrary.ON)
+            {
+               count++;
+            }
+         }
+         histogram.add(count);
+      }
+      return histogram;
    }
    
    /**
