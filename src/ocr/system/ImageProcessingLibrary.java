@@ -14,6 +14,7 @@ public class ImageProcessingLibrary
 {
    static final Integer ON = 0xffffffff;
    static final Integer OFF = 0x0;
+   static final Integer BLANK = 0xff;
 
    /**
     * Convert from gray-scale image to a binary image, separating the
@@ -191,7 +192,14 @@ public class ImageProcessingLibrary
     */
    public static Image correctSkew(Image pImage)
    {
-      return rotate(pImage, 20);
+      Image correct = null;
+      //Test for skew from -90 to 90 degrees
+      for (int angle = -90; angle <= 90; angle++)
+      {
+         Image current = rotate(pImage, angle);
+      }
+      
+      return correct;
    }
 
    private static Image rotate(Image pImage, double pAngle)
@@ -229,11 +237,15 @@ public class ImageProcessingLibrary
             int xPrime = (int) ((x * cosAngle) + (y * sinAngle) + (width / 2));
             int yPrime = (int) ((x * -sinAngle) + (y * cosAngle) + (height / 2));
 
-            //If the coordinates exist on the source map them to the target
+            //If the coordinates exist on the source then map them to the target
             if ((xPrime >= 0) && (xPrime < height)
                && (yPrime >= 0) && (yPrime < width))
             {
                target.setRGB(col, row, image.getRGB(yPrime, xPrime));
+            }
+            else
+            {
+               target.setRGB(col, row, BLANK);
             }
          }
       }
