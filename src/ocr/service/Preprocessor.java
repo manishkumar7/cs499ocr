@@ -2,6 +2,7 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
+import ocr.desktop.ImageDisplayer;
 import ocr.system.ImageProcessingLibrary;
 
 /**
@@ -22,6 +23,8 @@ public class Preprocessor
    {
       //Convert to a binary image
       Image document = ImageProcessingLibrary.threshold(pImage);
+      document = ImageProcessingLibrary.correctSkew(document);
+      ImageDisplayer.displayImage(document);
       return null;
    }
 }
