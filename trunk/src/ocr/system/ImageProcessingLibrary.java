@@ -3,6 +3,7 @@ package ocr.system;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -194,9 +195,12 @@ public class ImageProcessingLibrary
    public static Image correctSkew(Image pImage)
    {
       Image correct = null;
-      ArrayList<Double> histogram = null;
-      //Test for skew from -90 to 90 degrees
-      for (int angle = -90; angle <= 90; angle++)
+      double variance = 0;
+      double minVariance = 9999999;
+      int correctAngle = 0;
+
+      //Test for skew from -75 to 75 degrees
+      for (int angle = -75; angle <= 75; angle++)
       {
          //
          // Rotate the image, calculate the histogram for each row,
@@ -204,11 +208,48 @@ public class ImageProcessingLibrary
          //
 
          Image current = rotate(pImage, angle);
-         histogram = (ArrayList<Double>)FeatureExtractionLibrary.yAxisHistogram(
-            current);
+         int count = 0;
+         for (double i : FeatureExtractionLibrary.yAxisHistogram(current))
+         {
+            if (i > 0)
+            {
+               count++;
+            }
+         }
+
+         //variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
+         if (count < minVariance)
+         {
+            minVariance = count;
+            correct = current;
+            correctAngle = angle;
+         }
+      }
+      return correct;
+   }
+
+   public static double mean(Collection<Double> pData)
+   {
+      double sum = 0;
+      for (double i : pData)
+      {
+         sum += i;
+      }
+      return sum / pData.size();
+   }
+
+   public static double variance(Collection<Double> pData)
+   {
+      double mean = mean(pData);
+      double sum = 0;
+
+      for (double i : pData)
+      {
+         double diff = i - mean;
+         sum += Math.pow(diff, 2);
       }
 
-      return correct;
+      return sum / pData.size();
    }
 
    /**
