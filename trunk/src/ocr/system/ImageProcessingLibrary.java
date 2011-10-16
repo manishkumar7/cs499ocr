@@ -196,11 +196,10 @@ public class ImageProcessingLibrary
    {
       Image correct = null;
       double variance = 0;
-      double minVariance = 9999999;
-      int correctAngle = 0;
+      double maxVariance = -1;
 
-      //Test for skew from -75 to 75 degrees
-      for (int angle = -75; angle <= 75; angle++)
+      //Test for skew from -15 to 15 degrees
+      for (int angle = -15; angle <= 15; angle++)
       {
          //
          // Rotate the image, calculate the histogram for each row,
@@ -208,21 +207,12 @@ public class ImageProcessingLibrary
          //
 
          Image current = rotate(pImage, angle);
-         int count = 0;
-         for (double i : FeatureExtractionLibrary.yAxisHistogram(current))
-         {
-            if (i > 0)
-            {
-               count++;
-            }
-         }
 
-         //variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
-         if (count < minVariance)
+         variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
+         if (variance > maxVariance)
          {
-            minVariance = count;
+            maxVariance = variance;
             correct = current;
-            correctAngle = angle;
          }
       }
       return correct;
