@@ -375,10 +375,9 @@ public class ImageProcessingLibrary
          }
       }
 
-//      trimmed = image.getSubimage(minX - 5, minY - 5,
-//         (maxX - minX) + 10, (maxY - minY) + 10);
+      trimmed = image.getSubimage(minX - 5, minY - 5,
+         (maxX - minX) + 10, (maxY - minY) + 10);
 
-      trimmed = image.getSubimage(minX, minY, (maxX - minX), (maxY - minY));
       return trimmed;
    }
 
