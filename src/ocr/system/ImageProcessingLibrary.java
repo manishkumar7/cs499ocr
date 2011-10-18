@@ -207,7 +207,7 @@ public class ImageProcessingLibrary
 
          Image current = rotate(pImage, angle);
 
-         variance = variance(FeatureExtractionLibrary.yAxisBackgroundHistogram(current));
+         variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
          if (variance > maxVariance)
          {
             maxVariance = variance;
