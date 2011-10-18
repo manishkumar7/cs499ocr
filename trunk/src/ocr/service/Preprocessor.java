@@ -24,6 +24,8 @@ public class Preprocessor
       //Convert to a binary image
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
+      document = ImageProcessingLibrary.trim(document);
+      ImageDisplayer.displayImage(document);
       return null;
    }
 }

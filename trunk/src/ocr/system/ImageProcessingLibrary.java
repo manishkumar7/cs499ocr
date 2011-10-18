@@ -14,8 +14,8 @@ import java.util.List;
 public class ImageProcessingLibrary
 {
    static final Integer OFFWHITE = 0xffffffff;//OFF
-   static final Integer ONBLACK = 0x0;//ON
-   static final Integer BLANK = 0xff;
+   static final Integer ONBLACK = 0xff000000;//ON
+   static final Integer BLANK = 0xff0000ff;
 
    /**
     * Convert from gray-scale image to a binary image, separating the
@@ -345,9 +345,8 @@ public class ImageProcessingLibrary
          }
       }
 
-      trimmed = image.getSubimage(minX, minY, maxX - minX, maxY - minY);
-
-
+      trimmed = image.getSubimage(minX - 5, minY - 5,
+         (maxX - minX) + 10, (maxY - minY) + 10);
       return trimmed;
    }
 
