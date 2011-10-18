@@ -162,11 +162,42 @@ public class FeatureExtractionLibrary
 
       for (int row = 0; row < height; row++)
       {
-         //Count the number of ON pixels in each row
+         //Count the number of black pixels in each row
          count = 0;
          for (int col = 0; col < width; col++)
          {
-            if (image.getRGB(col, row) == ImageProcessingLibrary.ON)
+            if (image.getRGB(col, row) == ImageProcessingLibrary.ONBLACK)
+            {
+               count++;
+            }
+         }
+         histogram.add(count);
+      }
+      return histogram;
+   }
+
+   /**
+    * Calculates the frequency of background pixels along the y-axis.
+    *
+    * @param pImage The character image to extract features from
+    * @return The features extracted
+    */
+   public static Collection<Double> yAxisBackgroundHistogram(Image pImage)
+   {
+      ArrayList<Double> histogram = new ArrayList<Double>();
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      double count = 0;
+
+      for (int row = 0; row < height; row++)
+      {
+         //Count the number of black pixels in each row
+         count = 0;
+         for (int col = 0; col < width; col++)
+         {
+            if (image.getRGB(col, row) == ImageProcessingLibrary.OFFWHITE)
             {
                count++;
             }

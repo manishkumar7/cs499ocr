@@ -2,7 +2,6 @@ package ocr.system;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +13,8 @@ import java.util.List;
  */
 public class ImageProcessingLibrary
 {
-   static final Integer ON = 0xffffffff;
-   static final Integer OFF = 0x0;
+   static final Integer OFFWHITE = 0xffffffff;//OFF
+   static final Integer ONBLACK = 0x0;//ON
    static final Integer BLANK = 0xff;
 
    /**
@@ -135,11 +134,11 @@ public class ImageProcessingLibrary
             if (color > threshold)
             {
 
-               binary.setRGB(col, row, ON);
+               binary.setRGB(col, row, OFFWHITE);
             }
             else
             {
-               binary.setRGB(col, row, OFF);
+               binary.setRGB(col, row, ONBLACK);
             }
          }
       }
@@ -208,7 +207,7 @@ public class ImageProcessingLibrary
 
          Image current = rotate(pImage, angle);
 
-         variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
+         variance = variance(FeatureExtractionLibrary.yAxisBackgroundHistogram(current));
          if (variance > maxVariance)
          {
             maxVariance = variance;
@@ -303,6 +302,53 @@ public class ImageProcessingLibrary
       }
 
       return target;
+   }
+
+   public static Image trim(Image pImage)
+   {
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      BufferedImage trimmed = null;
+
+      int minY = 999999999;
+      int minX = 999999999;
+      int maxY = 0;
+      int maxX = 0;
+      
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            int color = image.getRGB(col, row);
+
+            if (color == ONBLACK)
+            {
+               if (row < minY)
+               {
+                  minY = row;
+               }
+               if (row > maxY)
+               {
+                  maxY = row;
+               }
+               if (col < minX)
+               {
+                  minX = col;
+               }
+               if (col > maxX)
+               {
+                  maxX = col;
+               }
+            }
+         }
+      }
+
+      trimmed = image.getSubimage(minX, minY, maxX - minX, maxY - minY);
+
+
+      return trimmed;
    }
 
    /**
