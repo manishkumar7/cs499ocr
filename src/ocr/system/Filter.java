@@ -83,7 +83,7 @@ public class Filter
          mNeighborValue = mNorth;
          mNumberNeighbors++;
 
-         if (mNorth == ImageProcessingLibrary.ON)
+         if (mNorth == ImageProcessingLibrary.ONBLACK)
          {
             mNumberOn++;
          }
@@ -94,7 +94,7 @@ public class Filter
             mNeighborValue = mNorthEast;
             mNumberNeighbors++;
 
-            if (mNorthEast == ImageProcessingLibrary.ON)
+            if (mNorthEast == ImageProcessingLibrary.ONBLACK)
             {
                mNumberOn++;
             }
@@ -107,7 +107,7 @@ public class Filter
          mNeighborValue = mEast;
          mNumberNeighbors++;
 
-         if (mEast == ImageProcessingLibrary.ON)
+         if (mEast == ImageProcessingLibrary.ONBLACK)
          {
             mNumberOn++;
          }
@@ -118,7 +118,7 @@ public class Filter
             mNeighborValue = mSouthEast;
             mNumberNeighbors++;
 
-            if (mSouthEast == ImageProcessingLibrary.ON)
+            if (mSouthEast == ImageProcessingLibrary.ONBLACK)
             {
                mNumberOn++;
             }
@@ -131,7 +131,7 @@ public class Filter
          mNeighborValue = mSouth;
          mNumberNeighbors++;
 
-         if (mSouth == ImageProcessingLibrary.ON)
+         if (mSouth == ImageProcessingLibrary.ONBLACK)
          {
             mNumberOn++;
          }
@@ -142,7 +142,7 @@ public class Filter
             mNeighborValue = mSouthWest;
             mNumberNeighbors++;
 
-            if (mSouthWest == ImageProcessingLibrary.ON)
+            if (mSouthWest == ImageProcessingLibrary.ONBLACK)
             {
                mNumberOn++;
             }
@@ -155,7 +155,7 @@ public class Filter
          mNeighborValue = mWest;
          mNumberNeighbors++;
 
-         if (mWest == ImageProcessingLibrary.ON)
+         if (mWest == ImageProcessingLibrary.ONBLACK)
          {
             mNumberOn++;
          }
@@ -166,7 +166,7 @@ public class Filter
             mNeighborValue = mNorthWest;
             mNumberNeighbors++;
 
-            if (mNorthWest == ImageProcessingLibrary.ON)
+            if (mNorthWest == ImageProcessingLibrary.ONBLACK)
             {
                mNumberOn++;
             }
@@ -183,7 +183,7 @@ public class Filter
     */
    public Integer getMedian()
    {
-      int median = ImageProcessingLibrary.OFF;
+      int median = ImageProcessingLibrary.OFFWHITE;
       int half =  (int) Math.floor(mNumberNeighbors / 2);
 
       if (mNumberOn == half)
@@ -192,7 +192,7 @@ public class Filter
       }
       else if (mNumberOn > half)
       {
-         median = ImageProcessingLibrary.ON;
+         median = ImageProcessingLibrary.ONBLACK;
       }
       
       return median;
@@ -248,12 +248,12 @@ public class Filter
    {
       boolean turnOn = false;
       boolean neighborsSame = neighborsAreSame();
-      if (neighborsSame && (mNeighborValue == ImageProcessingLibrary.ON))
+      if (neighborsSame && (mNeighborValue == ImageProcessingLibrary.ONBLACK))
       {
          turnOn = true;
       }
     
-      if (!neighborsSame && (mTargetValue == ImageProcessingLibrary.ON))
+      if (!neighborsSame && (mTargetValue == ImageProcessingLibrary.ONBLACK))
       {
          turnOn = true;
       }
