@@ -195,25 +195,55 @@ public class ImageProcessingLibrary
    {
       Image correct = null;
       double variance = 0;
+      double variance2 = 0;
       double maxVariance = -1;
+      double correctAngle = 0;
 
       //Test for skew from -15 to 15 degrees
-      for (int angle = -15; angle <= 15; angle++)
+      double low = -15;
+      double high = 15;
+      double testAngle = 1000;
+      double testAngle2 = 1;
+      double prevTest = 0;
+      double diff = 1;
+
+      while (diff > 0.1)
       {
-         //
-         // Rotate the image, calculate the histogram for each row,
-         // then choose the histogram with the maximum variance
-         //
+         prevTest = testAngle;
+         testAngle = ((low + high) / 2);
+         testAngle2 = testAngle + 1;
 
-         Image current = rotate(pImage, angle);
-
+         Image current = rotate(pImage, testAngle);
          variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
-         if (variance > maxVariance)
+         Image current2 = rotate(pImage, testAngle2);
+         variance2 = variance(FeatureExtractionLibrary.yAxisHistogram(current2));
+
+         //Decrease and Conquer! Assumes there is a single maxima.
+         if (variance > variance2)
          {
-            maxVariance = variance;
-            correct = current;
+            high = testAngle - 1;
+
+            if (variance > maxVariance)
+            {
+               maxVariance = variance;
+               correct = current;
+               correctAngle = testAngle;
+            }
          }
+         else
+         {
+            low = testAngle;
+
+            if (variance2 > maxVariance)
+            {
+               maxVariance = variance2;
+               correct = current2;
+               correctAngle = testAngle2;
+            }
+         }
+         diff = Math.abs(prevTest - testAngle);
       }
+
       return correct;
    }
 
@@ -345,8 +375,10 @@ public class ImageProcessingLibrary
          }
       }
 
-      trimmed = image.getSubimage(minX - 5, minY - 5,
-         (maxX - minX) + 10, (maxY - minY) + 10);
+//      trimmed = image.getSubimage(minX - 5, minY - 5,
+//         (maxX - minX) + 10, (maxY - minY) + 10);
+
+      trimmed = image.getSubimage(minX, minY, (maxX - minX), (maxY - minY));
       return trimmed;
    }
 
