@@ -130,16 +130,21 @@ public class FeatureExtractionLibrary
     */
    public static Collection<Double> xAxisHistogram(Image pImage)
    {
-      ArrayList<Double> histogram = new ArrayList<Double>();
       BufferedImage image = (BufferedImage) pImage;
       int width = image.getWidth();
       int height = image.getHeight();
-
+      ArrayList<Double> histogram = new ArrayList<Double>(width);
+      
       for (int row = 0; row < height; row++)
       {
+         //count the number of black pixels in each column
          for (int col = 0; col < width; col++)
          {
-
+            if (image.getRGB(col, row) == ImageProcessingLibrary.ONBLACK)
+            {
+               double count = histogram.get(col) + 1;
+               histogram.set(col, count);
+            }
          }
       }
       return histogram;
