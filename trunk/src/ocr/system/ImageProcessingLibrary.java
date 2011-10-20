@@ -214,9 +214,9 @@ public class ImageProcessingLibrary
          testAngle2 = testAngle + 1;
 
          Image current = rotate(pImage, testAngle);
-         variance = variance(FeatureExtractionLibrary.yAxisHistogram(current));
+         variance = variance(FeatureExtractionLibrary.rowHistogram(current));
          Image current2 = rotate(pImage, testAngle2);
-         variance2 = variance(FeatureExtractionLibrary.yAxisHistogram(current2));
+         variance2 = variance(FeatureExtractionLibrary.rowHistogram(current2));
 
          //Decrease and Conquer! Assumes there is a single maxima.
          if (variance > variance2)
