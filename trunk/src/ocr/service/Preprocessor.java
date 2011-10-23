@@ -2,7 +2,6 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
-import ocr.desktop.ImageDisplayer;
 import ocr.system.ImageProcessingLibrary;
 
 /**
@@ -25,7 +24,9 @@ public class Preprocessor
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
       document = ImageProcessingLibrary.trim(document);
-      ImageDisplayer.displayImage(document);
+      
+      ImageProcessingLibrary.extractCharacters(document);
+
       return null;
    }
 }

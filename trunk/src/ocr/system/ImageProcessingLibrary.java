@@ -2,9 +2,12 @@ package ocr.system;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Provide common methods needed to process images.
@@ -405,10 +408,86 @@ public class ImageProcessingLibrary
     * image.
     *
     * @param pImage The binary image to process.
-    * @return The processed image.
+    * @return The processed image with connected components labeled.
     */
-   public static Image labelConnectedComponents(Image pImage)
+   public static int[][] labelConnectedComponents(Image pImage)
    {
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      //Place to store the labels for the image
+      int[][] labeled = new int[height][width];
+      //Store the equivalence relations between labels
+      HashMap<Integer, Set<Integer>> equivalentLabels = new HashMap<Integer, Set<Integer>>();
+      //Don't use zero as a label
+      int currLabel = 1;
+
+      //
+      // First Pass
+      //
+
+      
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            int color = image.getRGB(col, row);
+
+            if (color == ONBLACK)
+            {
+               Neighbors neighbor = new Neighbors(labeled, width, height,
+                  row, col);
+
+               HashSet<Integer> neighborVals = (HashSet<Integer>)
+                  neighbor.getNeighborValues();
+
+               //Zero is not a label
+               neighborVals.remove(0);
+
+               //If neighbors is empty
+               if (neighborVals.isEmpty())
+               {
+                  //Make a new label
+                  equivalentLabels.put(currLabel, new HashSet<Integer>());
+                  labeled[row][col] = currLabel;
+                  currLabel++;
+               }
+               else
+               {
+                  int smallest = 99999999;
+                  boolean setSmallest = true;
+
+                  //Track equivalance relations with neighbor labels
+                  for (int i : neighborVals)
+                  {
+                     if (setSmallest)
+                     {
+                        smallest = i;
+                        setSmallest = false;
+                     }
+
+                     for (int j : neighborVals)
+                     {
+                        equivalentLabels.get(i).add(j);
+                     }
+                  }
+
+                  //Label with the smallest neighbor label
+                  labeled[row][col] = smallest;
+               }
+
+            }
+         }
+      }
+      
+
+      return null;
+   }
+
+   public static Collection<Image> extractCharacters(Image pImage)
+   {
+      labelConnectedComponents(pImage);
       return null;
    }
 
