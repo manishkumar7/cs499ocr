@@ -247,6 +247,12 @@ public class ImageProcessingLibrary
       return correct;
    }
 
+   /**
+    * Calculate the mean of the data provided.
+    *
+    * @param pData The data set
+    * @return The mean of the data
+    */
    public static double mean(Collection<Double> pData)
    {
       double sum = 0;
@@ -257,6 +263,12 @@ public class ImageProcessingLibrary
       return sum / pData.size();
    }
 
+   /**
+    * Calculate the variance of the data provided.
+    *
+    * @param pData The data set
+    * @return The variance of the data
+    */
    public static double variance(Collection<Double> pData)
    {
       double mean = mean(pData);
@@ -334,6 +346,13 @@ public class ImageProcessingLibrary
       return target;
    }
 
+   /**
+    * Remove excess background from the far edges of the foreground.
+    *
+    * @param pImage The image to trim
+    * @return The image with the extraneous background pixels around the edges
+    * removed
+    */
    public static Image trim(Image pImage)
    {
       BufferedImage image = (BufferedImage) pImage;
