@@ -426,8 +426,7 @@ public class ImageProcessingLibrary
       //
       // First Pass
       //
-
-      
+   
       for (int row = 0; row < height; row++)
       {
          for (int col = 0; col < width; col++)
@@ -455,16 +454,15 @@ public class ImageProcessingLibrary
                }
                else
                {
-                  int smallest = 99999999;
-                  boolean setSmallest = true;
+                  int smallest = 999999999;
 
                   //Track equivalance relations with neighbor labels
                   for (int i : neighborVals)
                   {
-                     if (setSmallest)
+                     //Find the smallest
+                     if (i < smallest)
                      {
                         smallest = i;
-                        setSmallest = false;
                      }
 
                      for (int j : neighborVals)
@@ -476,13 +474,40 @@ public class ImageProcessingLibrary
                   //Label with the smallest neighbor label
                   labeled[row][col] = smallest;
                }
-
             }
          }
       }
-      
 
-      return null;
+      //
+      // Second Pass
+      //
+
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            int color = image.getRGB(col, row);
+
+            if (color == ONBLACK)
+            {
+               //Relabel to the lowest equivalent label
+               int curr = labeled[row][col];
+               int lowestEquivalent = 999999999;
+
+               for (int i : equivalentLabels.get(curr))
+               {
+                  if (i < lowestEquivalent)
+                  {
+                     lowestEquivalent = i;
+                  }
+               }
+
+               labeled[row][col] = lowestEquivalent;
+            }
+         }
+      }
+
+      return labeled;
    }
 
    public static Collection<Image> extractCharacters(Image pImage)
