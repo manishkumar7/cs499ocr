@@ -1,7 +1,11 @@
 package ocr.service;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Collection;
+import ocr.system.FeatureExtractionLibrary;
+import ocr.system.ImageProcessingLibrary;
+import ocr.system.PixelHistogram;
 
 /**
  * Converts a character image into a collection of features, a feature point.
@@ -40,7 +44,11 @@ public class FeatureExtractor
     */
    public FeatureExtractor(Image pCharacter)
    {
-
+      mFeaturePoint = new ArrayList<Double>();
+      mCharacter = pCharacter;
+      mNormalized = ImageProcessingLibrary.normalize(pCharacter);
+      mContour = ImageProcessingLibrary.traceContour(pCharacter);
+      mThin = ImageProcessingLibrary.thin(pCharacter);
    }
 
    /**
@@ -62,6 +70,17 @@ public class FeatureExtractor
     */
    public void run()
    {
+      PixelHistogram hist = new PixelHistogram(mNormalized);
 
+      mFeaturePoint.add(FeatureExtractionLibrary.area(mCharacter));
+
+      for (double i : hist.getColumnHistogram())
+      {
+         mFeaturePoint.add(i);
+      }
+      for (double i : hist.getRowHistogram())
+      {
+         mFeaturePoint.add(i);
+      }
    }
 }
