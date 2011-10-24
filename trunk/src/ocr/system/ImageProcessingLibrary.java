@@ -579,7 +579,7 @@ public class ImageProcessingLibrary
     */
    public static Image normalize(Image pImage)
    {
-      return null;
+      return pImage;
    }
 
    /**
