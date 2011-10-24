@@ -10,6 +10,42 @@ import java.util.Set;
  */
 public class Neighbors
 {
+   /**
+    * The north neighbor pixel value
+    */
+   Integer mNorth;
+   /**
+    * The north east neighbor pixel value
+    */
+   Integer mNorthEast;
+   /**
+    * The east neighbor pixel value
+    */
+   Integer mEast;
+   /**
+    * The south east neighbor pixel value
+    */
+   Integer mSouthEast;
+   /**
+    * The south neighbor pixel value
+    */
+   Integer mSouth;
+   /**
+    * The south west neighbor pixel value
+    */
+   Integer mSouthWest;
+   /**
+    * The west neighbor pixel value
+    */
+   Integer mWest;
+   /**
+    * The north west neighbor pixel value
+    */
+   Integer mNorthWest;
+
+   /**
+    * A set containing the values of the neighbors
+    */
    private Set<Integer> mNeighborValues;
 
    public Neighbors(int[][] pImage, int pWidth, int pHeight, int pRow, int pCol)
@@ -19,59 +55,60 @@ public class Neighbors
       if (pRow > 0)
       {
          //North
-         int north = pImage[pRow - 1][pCol];
-         mNeighborValues.add(north);
+         mNorth = pImage[pRow - 1][pCol];
+         mNeighborValues.add(mNorth);
 
          if (pCol < (pWidth - 1))
          {
             //North East
-            int northEast = pImage[pRow - 1][pCol + 1];
-            mNeighborValues.add(northEast);
+            mNorthEast = pImage[pRow - 1][pCol + 1];
+            mNeighborValues.add(mNorthEast);
          }
       }
 
       if (pCol < (pWidth - 1))
       {
          //East
-         int east = pImage[pRow][pCol + 1];
-         mNeighborValues.add(east);
+         mEast = pImage[pRow][pCol + 1];
+         mNeighborValues.add(mEast);
          
          if (pRow < (pHeight - 1))
          {
             //South East
-            int southEast = pImage[pRow + 1][pCol + 1];
-            mNeighborValues.add(southEast);
+            mSouthEast = pImage[pRow + 1][pCol + 1];
+            mNeighborValues.add(mSouthEast);
          }
       }
 
       if (pRow < (pHeight - 1))
       {
          //South
-         int south = pImage[pRow + 1][pCol];
-         mNeighborValues.add(south);
+         mSouth = pImage[pRow + 1][pCol];
+         mNeighborValues.add(mSouth);
 
-         if (pCol > (pWidth - 1))
+         if (pCol > 0)
          {
             //South West
-            int southWest = pImage[pRow + 1][pCol - 1];
-            mNeighborValues.add(southWest);
+            mSouthWest = pImage[pRow + 1][pCol - 1];
+            mNeighborValues.add(mSouthWest);
          }
       }
 
-      if (pCol > (pWidth - 1))
+      if (pCol > 0)
       {
          //West
-         int west = pImage[pRow][pCol - 1];
-         mNeighborValues.add(west);
+         mWest = pImage[pRow][pCol - 1];
+         mNeighborValues.add(mWest);
 
-         if (pRow > (pHeight - 1))
+         if (pRow > 0)
          {
             //North West
-            int northWest = pImage[pRow - 1][pCol - 1];
-            mNeighborValues.add(northWest);
+            mNorthWest = pImage[pRow - 1][pCol - 1];
+            mNeighborValues.add(mNorthWest);
          }
       }
    }
+
 
    public Set<Integer> getNeighborValues()
    {
