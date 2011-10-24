@@ -2,7 +2,6 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
-import ocr.desktop.ImageDisplayer;
 
 /**
  * Extract characters from an image and convert to a String.
@@ -21,9 +20,20 @@ public class OpticalCharacterRecognizer
    public static String extractString(Image pImage)
    {
       Collection<Image> characters = Preprocessor.preprocess(pImage);
+      String text = "";
 
+      //TODO: Create a thread pool of size 4
+      for (Image character : characters)
+      {
+         FeatureExtractor extractor = new FeatureExtractor(character);
+         extractor.run();
 
-
-      return "Recognized Test";
+         PatternRecognizer recognizer = new PatternRecognizer(extractor.
+            getFeaturePoint());
+         recognizer.run();
+         text += recognizer.getCharacter();
+      }
+      
+      return text;
    }
 }
