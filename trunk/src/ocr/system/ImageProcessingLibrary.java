@@ -136,7 +136,6 @@ public class ImageProcessingLibrary
 
             if (color > threshold)
             {
-
                binary.setRGB(col, row, OFFWHITE);
             }
             else
@@ -511,10 +510,65 @@ public class ImageProcessingLibrary
       return labeled;
    }
 
+   /**
+    * Extract characters from the image given.
+    *
+    * @param pImage The image to process
+    * @return The collection of images containing characters from the image
+    */
    public static Collection<Image> extractCharacters(Image pImage)
    {
-      labelConnectedComponents(pImage);
-      return null;
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+      
+      ArrayList<Image> characters = new ArrayList<Image>();
+      int[][] labeled = labelConnectedComponents(pImage);
+      HashMap<Integer, BoundingBox> labelBoxMap;
+      labelBoxMap = new HashMap<Integer, BoundingBox>();
+
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            int color = image.getRGB(col, row);
+
+            //Look for connected components
+            if (color == ONBLACK)
+            {
+               int label = labeled[row][col];
+               
+               BoundingBox box = labelBoxMap.get(label);
+
+               if (box == null)
+               {
+                  //Make a new bounding box for this component
+                  box = new BoundingBox();
+               }
+
+               //Adjust the bounding box for this component
+               box.setRow(row);
+               box.setCol(col);
+               labelBoxMap.put(label, box);
+            }
+
+         }
+      }
+
+      //Extract the character
+      for (int key : labelBoxMap.keySet())
+      {
+         BoundingBox box = labelBoxMap.get(key);
+         int minX = box.getMinCol();
+         int minY = box.getMinRow();
+         int maxX = box.getMaxCol();
+         int maxY = box.getMaxRow();
+         Image character = image.getSubimage(minX - 1, minY - 1,
+         (maxX - minX) + 2, (maxY - minY) + 2);
+         characters.add(character);
+      }
+
+      return characters;
    }
 
    /**
