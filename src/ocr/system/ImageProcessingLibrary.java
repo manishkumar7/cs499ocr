@@ -448,9 +448,7 @@ public class ImageProcessingLibrary
                if (neighborVals.isEmpty())
                {
                   //Make a new label
-                  HashSet<Integer> newSet = new HashSet<Integer>();
-                  newSet.add(currLabel);
-                  equivalentLabels.put(currLabel, newSet);
+                  equivalentLabels.put(currLabel, new HashSet<Integer>());
 
                   labeled[row][col] = currLabel;
                   currLabel++;
@@ -471,7 +469,6 @@ public class ImageProcessingLibrary
                      for (int j : neighborVals)
                      {
                         equivalentLabels.get(i).add(j);
-                        equivalentLabels.get(j).add(i);
                      }
                   }
 
@@ -510,24 +507,6 @@ public class ImageProcessingLibrary
             }
          }
       }
-
-//      for (int row = 0; row < height; row++)
-//      {
-//         for (int col = 0; col < width; col++)
-//         {
-//            int label = labeled[row][col];
-//
-//            if (label > 0)
-//            {
-//               System.out.print(label + " ");
-//            }
-//            else
-//            {
-//               System.out.print("  ");
-//            }
-//         }
-//         System.out.println();
-//      }
 
       return labeled;
    }
