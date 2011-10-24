@@ -77,6 +77,8 @@ public class Filter
       mNumberNeighbors = 0;
       mNumberOn = 0;
 
+      //TODO: Use neighbors object instead of code below
+
       if (pRow > 0)
       {
          mNorth = image.getRGB(pCol, pRow - 1);
