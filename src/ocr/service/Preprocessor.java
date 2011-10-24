@@ -20,13 +20,10 @@ public class Preprocessor
     */
    public static Collection<Image> preprocess(Image pImage)
    {
-      //Convert to a binary image
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
       document = ImageProcessingLibrary.trim(document);
       
-      ImageProcessingLibrary.extractCharacters(document);
-
-      return null;
+      return ImageProcessingLibrary.extractCharacters(document);
    }
 }
