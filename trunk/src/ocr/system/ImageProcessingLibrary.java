@@ -565,7 +565,14 @@ public class ImageProcessingLibrary
          int maxY = box.getMaxRow();
          Image character = image.getSubimage(minX - 1, minY - 1,
          (maxX - minX) + 2, (maxY - minY) + 2);
-         characters.add(character);
+
+         int charHeight = character.getHeight(null);
+         int charWidth = character.getWidth(null);
+
+         if ((charHeight > 10) && (charWidth > 5))
+         {
+            characters.add(character);
+         }    
       }
 
       return characters;
