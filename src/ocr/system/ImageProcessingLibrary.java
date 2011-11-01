@@ -447,8 +447,9 @@ public class ImageProcessingLibrary
                if (neighborVals.isEmpty())
                {
                   //Make a new label
-                  equivalentLabels.put(currLabel, new HashSet<Integer>());
-
+                  HashSet<Integer> newSet = new HashSet<Integer>();
+                  newSet.add(currLabel);
+                  equivalentLabels.put(currLabel, newSet);
                   labeled[row][col] = currLabel;
                   currLabel++;
                }
@@ -456,19 +457,44 @@ public class ImageProcessingLibrary
                {
                   int smallest = 999999999;
 
-                  //Track equivalance relations with neighbor labels
+                  //
+                  // Track equivalance relations with neighbor labels
+                  //
+
+                  HashSet<Integer> currSet = new HashSet<Integer>();
+
+                  // NOTE: This method is not a true union of all
+                  // the equivalence relations
+
+                  //Perform a union of all neibor labels and their equivalents
                   for (int i : neighborVals)
                   {
+
                      //Find the smallest
                      if (i < smallest)
                      {
                         smallest = i;
                      }
 
-                     for (int j : neighborVals)
+                     currSet.add(i);
+                     for (int j : equivalentLabels.get(i))
                      {
-                        equivalentLabels.get(i).add(j);
+                        currSet.add(j);
                      }
+                  }
+
+                  //Make sure each label has the the same equivalence relation
+                  for (int i : currSet)
+                  {
+                     for (int j : equivalentLabels.get(i))
+                     {
+                        currSet.add(j);
+                     }
+                  }
+
+                  for (int i : currSet)
+                  {
+                     equivalentLabels.put(i, currSet);
                   }
 
                   //Label with the smallest neighbor label
