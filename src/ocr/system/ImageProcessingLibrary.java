@@ -585,23 +585,72 @@ public class ImageProcessingLibrary
       for (int key : labelBoxMap.keySet())
       {
          BoundingBox box = labelBoxMap.get(key);
-         int minX = box.getMinCol();
-         int minY = box.getMinRow();
-         int maxX = box.getMaxCol();
-         int maxY = box.getMaxRow();
-         Image character = image.getSubimage(minX - 1, minY - 1,
-         (maxX - minX) + 2, (maxY - minY) + 2);
+         Image character = makeCharacter(labeled, key, box);
 
-         int charHeight = character.getHeight(null);
-         int charWidth = character.getWidth(null);
-
-         if ((charHeight > 10) && (charWidth > 5))
+         if (character != null)
          {
-            characters.add(character);
-         }    
+            int charHeight = character.getHeight(null);
+            int charWidth = character.getWidth(null);
+
+            //Reject components that are too small
+            if ((charHeight > 10) && (charWidth > 5))
+            {
+               characters.add(character);
+            }
+         }
       }
 
       return characters;
+   }
+
+   /**
+    * Make a character image from the labeled connected components and the
+    * bounding box surrounding the given label.
+    *
+    * @param pLabeled The labeled connected components
+    * @param pLabel The label of the character
+    * @param pBox The box surrounding the character
+    * @return The image of the character
+    */
+   private static Image makeCharacter(int[][] pLabeled, int pLabel, BoundingBox pBox)
+   {
+      int minCol = pBox.getMinCol();
+      int minRow = pBox.getMinRow();
+      int maxCol = pBox.getMaxCol();
+      int maxRow = pBox.getMaxRow();
+      
+      int height = (maxRow - minRow) + 2;
+      int width = (maxCol - minCol) + 2;
+      minCol -= 1;
+      minRow -= 1;
+
+      BufferedImage component = null;
+      
+      if ((height > 0) && (width > 0))
+      {
+         component = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+         int i;
+         int j;
+         //Scan for the label of our character
+         for (int row = 0; row < height; row++)
+         {
+            i = row + minRow;
+            for (int col = 0; col < width; col++)
+            {
+               j = col + minCol;
+               if (pLabel == pLabeled[i][j])
+               {
+                  component.setRGB(col, row, ONBLACK);
+               }
+               else
+               {
+                  component.setRGB(col, row, OFFWHITE);
+               }
+            }
+         }
+      }
+      return component;
    }
 
    /**
