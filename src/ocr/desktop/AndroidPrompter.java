@@ -17,7 +17,7 @@ public class AndroidPrompter
     * @param pImage The image to display
     * @return The character retrieved from the user
     */
-   public char promptUser(Image pImage)
+   public String promptUser(Image pImage)
    {
       throw new UnsupportedOperationException("Not supported yet.");
    }

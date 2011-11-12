@@ -10,10 +10,10 @@ import java.awt.Image;
 public interface CharacterPrompter
 {
    /**
-    * Show the image to the user and prompt them for a character.
+    * Show the image to the user and prompt them for a character(s).
     *
     * @param pImage The image to display
-    * @return The character retrieved from the user
+    * @return The character(s) retrieved from the user
     */
-   public abstract char promptUser(Image pImage);
+   public abstract String promptUser(Image pImage);
 }

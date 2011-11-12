@@ -1,7 +1,19 @@
 package ocr.desktop;
 
 
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import ocr.system.CharacterPrompter;
 
 
@@ -20,8 +32,18 @@ public class DesktopPrompter
     * @param pImage The image to display
     * @return The character retrieved from the user
     */
-   public char promptUser(Image pImage)
-   {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public String promptUser(Image pImage)
+   {      
+      ImageIcon icon = new ImageIcon(pImage);
+      String userInput = (String)JOptionPane.showInputDialog(
+                    null,
+                    "What character(s) do you see?",
+                    "Character Prompter",
+                    JOptionPane.PLAIN_MESSAGE,
+                    icon,
+                    null,
+                    null);
+
+      return userInput;
    }
 }
