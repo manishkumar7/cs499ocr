@@ -35,7 +35,7 @@ public class TrainingData
       mData = new ArrayList<CharacterFeaturePair>();
    }
 
-   public TrainingData getInstance()
+   public static TrainingData getInstance()
    {
       return cInstance;
    }
