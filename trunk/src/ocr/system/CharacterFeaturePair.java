@@ -10,9 +10,9 @@ import java.util.Collection;
 public class CharacterFeaturePair
 {
    /**
-    * The character associated with the feature point
+    * The character(s) associated with the feature point
     */
-   private char mCharacter;
+   private String mCharacter;
    /**
     * The feature point associated with the character
     */
@@ -24,7 +24,7 @@ public class CharacterFeaturePair
     * @param pCharacter The character
     * @param pFeaturePoint The feature point
     */
-   public CharacterFeaturePair(char pCharacter, Collection<Double> pFeaturePoint)
+   public CharacterFeaturePair(String pCharacter, Collection<Double> pFeaturePoint)
    {
       mCharacter = pCharacter;
       mFeaturePoint = pFeaturePoint;
@@ -35,7 +35,7 @@ public class CharacterFeaturePair
     *
     * @return The character
     */
-   public char getCharacter()
+   public String getCharacter()
    {
       return mCharacter;
    }
