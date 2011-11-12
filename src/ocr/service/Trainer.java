@@ -2,6 +2,7 @@ package ocr.service;
 
 import java.awt.Image;
 import java.util.Collection;
+import ocr.system.CharacterFeaturePair;
 import ocr.system.CharacterPrompter;
 
 /**
@@ -59,6 +60,12 @@ public class Trainer
 
          String user = mPrompter.promptUser(character);
          text += user;
+
+         //Associate the calculated feature point with the user input
+         CharacterFeaturePair pair = new CharacterFeaturePair(user, extractor.
+            getFeaturePoint());
+
+         mProxy.insertTrainingData(pair);
       }
 
       return text;
