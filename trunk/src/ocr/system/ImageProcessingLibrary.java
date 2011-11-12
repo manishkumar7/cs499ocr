@@ -20,6 +20,9 @@ public class ImageProcessingLibrary
    static final Integer ONBLACK = 0xff000000;//ON
    static final Integer BLANK = 0xff0000ff;
 
+   static final Integer NORMAL_HEIGHT = 22;
+   static final Integer NORMAL_WIDTH = 42;
+
    /**
     * Convert from gray-scale image to a binary image, separating the
     * foreground from the background.
@@ -598,6 +601,8 @@ public class ImageProcessingLibrary
                //Reject components that are too big
                if ((charHeight < 24) && (charWidth < 42))
                {
+                  //Normalize the character
+                  character = normalize(character, box);
                   characters.add(character);
                }
             }
@@ -663,9 +668,46 @@ public class ImageProcessingLibrary
     * @param pImage The image to process.
     * @return The processed image.
     */
-   public static Image normalize(Image pImage)
+   private static Image normalize(Image pImage, BoundingBox pBox)
    {
-      return pImage;
+      BufferedImage normal = new BufferedImage(NORMAL_WIDTH, NORMAL_HEIGHT,
+         BufferedImage.TYPE_INT_RGB);
+
+      BufferedImage image = (BufferedImage) pImage;
+      int width = image.getWidth();
+      int height = image.getHeight();
+
+      int minRow = pBox.getMinRow();
+      int minCol = pBox.getMinCol();
+
+      int y = pBox.getMaxRow() - minRow;
+      int x = pBox.getMaxCol() - minCol;
+
+      //Find where to begin inserting the character into the normal image
+      int startRow = (NORMAL_HEIGHT - y) / 2;
+      int startCol = (NORMAL_WIDTH - x) / 2;
+
+      int color;
+
+      for (int row = 0; row < NORMAL_HEIGHT; row++)
+      {
+         for (int col = 0; col < NORMAL_WIDTH; col++)
+         {
+            normal.setRGB(col, row, OFFWHITE);
+         }
+      }
+
+      //Copy the image over
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            color = image.getRGB(col, row);
+            normal.setRGB(col + startCol, row + startRow, color);
+         }
+      }
+
+      return normal;
    }
 
    /**
