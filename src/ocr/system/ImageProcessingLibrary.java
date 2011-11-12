@@ -593,9 +593,13 @@ public class ImageProcessingLibrary
             int charWidth = character.getWidth(null);
 
             //Reject components that are too small
-            if ((charHeight > 10) && (charWidth > 5))
+            if ((charHeight > 16) && (charWidth > 2))
             {
-               characters.add(character);
+               //Reject components that are too big
+               if ((charHeight < 24) && (charWidth < 42))
+               {
+                  characters.add(character);
+               }
             }
          }
       }
