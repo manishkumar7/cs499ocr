@@ -1,6 +1,7 @@
 package ocr.system;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -17,13 +18,36 @@ public class TrainingData
    private Collection<CharacterFeaturePair> mData;
 
    /**
+    * Variable to hold a singleton of TrainingData
+    */
+   private static final TrainingData cInstance;
+
+   /**
+    * Initialize a Server instance
+    */
+   static
+   {
+      cInstance = new TrainingData();
+   }
+
+   private TrainingData()
+   {
+      mData = new ArrayList<CharacterFeaturePair>();
+   }
+
+   public TrainingData getInstance()
+   {
+      return cInstance;
+   }
+
+   /**
     * Insert a new character-feature pair into the training data
     *
     * @param pData The character-feature pair to store
     */
    public void insert(CharacterFeaturePair pData)
    {
-
+      mData.add(pData);
    }
 
    /**
