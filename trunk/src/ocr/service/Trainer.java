@@ -1,6 +1,7 @@
 package ocr.service;
 
 import java.awt.Image;
+import java.util.Collection;
 import ocr.system.CharacterPrompter;
 
 /**
@@ -32,7 +33,9 @@ public class Trainer
     */
    public Trainer(CharacterPrompter pPrompter, Image pImage)
    {
-
+      mPrompter = pPrompter;
+      mTrainingImage = pImage;
+      mProxy = new TrainingDataProxy();
    }
 
    /**
@@ -46,6 +49,18 @@ public class Trainer
     */
    public String train()
    {
-      return "Training test";
+      Collection<Image> characters = Preprocessor.preprocess(mTrainingImage);
+      String text = "";
+
+      for (Image character : characters)
+      {
+         FeatureExtractor extractor = new FeatureExtractor(character);
+         extractor.run();
+
+         String user = mPrompter.promptUser(character);
+         text += user;
+      }
+
+      return text;
    }
 }
