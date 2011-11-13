@@ -2,6 +2,7 @@ package ocr.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import ocr.system.CharacterFeaturePair;
 import ocr.system.DistanceCharacterPair;
 
@@ -138,7 +139,39 @@ public class PatternRecognizer
     */
    private void kNearestNeighbor(int k)
    {
+      HashMap<String, Integer> near = new HashMap<String, Integer>();
+      ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;
 
+      for (int i = 0; i < k; i++)
+      {
+         DistanceCharacterPair pair = list.get(i);
+         String character = pair.getCharacter();
+         Integer count = near.get(character);
+
+         //If the character has not yet been mapped to a count
+         if (count == null)
+         {
+            count = 1;
+         }
+         else
+         {
+            count++;
+         }
+
+         //Map each character to it's frequency in the k neighbors
+         near.put(character, count);
+      }
+
+      int greatest = -1;
+      for (String key : near.keySet())
+      {
+         int val = near.get(key);
+         if (val > greatest)
+         {
+            greatest = val;
+            mCharacter = key;
+         }
+      }
    }
 
    /**
@@ -190,5 +223,6 @@ public class PatternRecognizer
    {
       calcDistances();
       sortDistances();
+      kNearestNeighbor(5);
    }
 }
