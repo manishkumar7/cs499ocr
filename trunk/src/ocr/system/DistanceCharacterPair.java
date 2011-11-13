@@ -11,7 +11,7 @@ public class DistanceCharacterPair
    /**
     * The character associated with the distance
     */
-   private char mCharacter;
+   private String mCharacter;
    /**
     * The distance from the character to another feature point
     */
@@ -23,7 +23,7 @@ public class DistanceCharacterPair
     * @param pCharacter The character
     * @param pDistance The distance
     */
-   public DistanceCharacterPair(char pCharacter, double pDistance)
+   public DistanceCharacterPair(String pCharacter, double pDistance)
    {
       mCharacter = pCharacter;
       mDistance = pDistance;
@@ -34,7 +34,7 @@ public class DistanceCharacterPair
     *
     * @return The character
     */
-   public char getCharacter()
+   public String getCharacter()
    {
       return mCharacter;
    }

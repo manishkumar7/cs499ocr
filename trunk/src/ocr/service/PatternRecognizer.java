@@ -1,5 +1,6 @@
 package ocr.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
 import ocr.system.DistanceCharacterPair;
@@ -19,7 +20,7 @@ public class PatternRecognizer
    /**
     * The character determined from the feature point
     */
-   private char mCharacter;
+   private String mCharacter;
    /**
     * The training data to compare with
     */
@@ -41,15 +42,11 @@ public class PatternRecognizer
     */
    public PatternRecognizer(Collection<Double> pFeaturePoint)
    {
-
-   }
-
-   /**
-    * Obtains and sets the training data.
-    */
-   private void initTrainingData()
-   {
-
+      mFeaturePoint = pFeaturePoint;
+      mProxy = new TrainingDataProxy();
+      mTrainingData = mProxy.getTrainingData();
+      mDistances = new ArrayList<DistanceCharacterPair>();
+      mCharacter = "";
    }
 
    /**
@@ -58,7 +55,16 @@ public class PatternRecognizer
     */
    private void calcDistances()
    {
-
+      //Go through the training data
+      for (CharacterFeaturePair train : mTrainingData)
+      {
+         double distance = distance(mFeaturePoint, train.getFeaturePoint());
+         
+         //Store the calculated distance
+         DistanceCharacterPair pair = new DistanceCharacterPair(train.
+            getCharacter(), distance);
+         mDistances.add(pair);
+      }
    }
 
    /**
@@ -66,7 +72,62 @@ public class PatternRecognizer
     */
    private void sortDistances()
    {
+      quickSort(0, mDistances.size() - 1);
+   }
 
+   public void quickSort(int pLowerBound, int pUpperBound)
+   {
+      ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;
+      int i = pLowerBound;
+      int j = pUpperBound;
+      int size = pUpperBound - pLowerBound;
+
+      //Choose the middle of the list as the pivot
+      int pivotIndex = pLowerBound + (size / 2);
+      DistanceCharacterPair pivot = list.get(pivotIndex);
+
+      //Make two sublists
+      while (i <= j)
+      {
+         //Find an element that needs to be moved into the second list
+         while (list.get(i).getDistance() < pivot.getDistance())
+         {
+            i++;
+         }
+
+         //Find an element to swap into the first list
+         while (list.get(j).getDistance() > pivot.getDistance())
+         {
+            j--;
+         }
+
+         //Make sure that the two scanners haven't crossed
+         if (i <= j)
+         {
+            //Swap the elements we found and move on to the next
+            swap(i, j);
+            i++;
+            j--;
+         }
+      }
+
+      //Recursively sort the two sublists
+      if (pLowerBound < j)
+      {
+         quickSort(pLowerBound, j);
+      }
+      if (i < pUpperBound)
+      {
+         quickSort(i, pUpperBound);
+      }
+   }
+
+   private void swap(int i, int j)
+   {
+      ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;
+      DistanceCharacterPair temp = list.get(i);
+      list.set(i, list.get(j));
+      list.set(j, temp);
    }
 
    /**
@@ -90,7 +151,22 @@ public class PatternRecognizer
    private double distance(Collection<Double> pPointA,
       Collection<Double> pPointB)
    {
-      return 0.0;
+      double distance = 0;
+      double sum = 0;
+
+      Double[] pointB = pPointB.toArray(new Double[pPointB.size()]);
+
+      //Calculate the distance from point a to point b
+      int i = 0;
+      for (Double pointA : pPointA)
+      {
+         //(a - b) ^ 2
+         sum += Math.pow(pointA - pointB[i], 2);
+         i++;
+      }
+      distance = Math.sqrt(sum);
+
+      return distance;
    }
 
 
@@ -100,7 +176,7 @@ public class PatternRecognizer
     *
     * @return The character associated with the feature point
     */
-   public char getCharacter()
+   public String getCharacter()
    {
       return mCharacter;
    }
@@ -112,5 +188,7 @@ public class PatternRecognizer
     */
    public void run()
    {
+      calcDistances();
+      sortDistances();
    }
 }
