@@ -1,5 +1,6 @@
 package ocr.system;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -8,6 +9,7 @@ import java.util.Collection;
  * @author Devin
  */
 public class CharacterFeaturePair
+   implements Serializable
 {
    /**
     * The character(s) associated with the feature point
