@@ -1,5 +1,8 @@
 package ocr.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
 import ocr.system.TrainingData;
@@ -26,6 +29,28 @@ public class TrainingDataProxy
    public void insertTrainingData(CharacterFeaturePair pData)
    {
       mTrainingBase.insert(pData);
+   }
+
+   public void saveTraingData()
+   {
+      try
+      {
+         FileOutputStream fos = new FileOutputStream(TrainingData.cFileName);
+         ObjectOutputStream oos = new ObjectOutputStream(fos);
+         oos.writeObject(mTrainingBase);
+         oos.flush();
+         oos.close();
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
+   }
+
+   public void deleteTrainingData()
+   {
+      File file = new File(TrainingData.cFileName);
+      file.delete();
    }
 
    /**

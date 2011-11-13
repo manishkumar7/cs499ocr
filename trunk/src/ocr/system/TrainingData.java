@@ -1,5 +1,8 @@
 package ocr.system;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +25,38 @@ public class TrainingData
     */
    private static final TrainingData cInstance;
 
+   public final static String cFileName = "train";
+
    /**
-    * Initialize a Server instance
+    * Initialize a TrainingData instance
     */
    static
    {
-      cInstance = new TrainingData();
+      TrainingData data = null;
+      try
+      {
+         File file = new File(cFileName);
+         if (file.exists())
+         {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            data = (TrainingData) ois.readObject();
+            ois.close();
+         }
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
+
+      if (data == null)
+      {
+         cInstance = new TrainingData();
+      }
+      else
+      {
+         cInstance = data;
+      }
    }
 
    private TrainingData()

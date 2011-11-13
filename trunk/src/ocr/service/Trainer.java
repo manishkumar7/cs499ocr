@@ -68,6 +68,7 @@ public class Trainer
          mProxy.insertTrainingData(pair);
       }
 
+      mProxy.saveTraingData();
       return text;
    }
 }
