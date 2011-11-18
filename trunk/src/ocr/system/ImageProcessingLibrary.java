@@ -3,6 +3,7 @@ package ocr.system;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,12 +17,27 @@ import java.util.Set;
  */
 public class ImageProcessingLibrary
 {
-   static final Integer OFFWHITE = 0xffffffff;//OFF
-   static final Integer ONBLACK = 0xff000000;//ON
-   static final Integer BLANK = 0xff0000ff;
+   public static final Integer OFFWHITE = 0xffffffff;//OFF
+   public static final Integer ONBLACK = 0xff000000;//ON
+   public static final Integer BLANK = 0xff0000ff;
 
-   static final Integer NORMAL_HEIGHT = 22;
-   static final Integer NORMAL_WIDTH = 42;
+   public static final Integer NORMAL_HEIGHT = 22;
+   public static final Integer NORMAL_WIDTH = 42;
+
+   public static final Image NEWLINE_MARK;
+   public static final Image SPACE_MARK;
+   //Set up images to represent the space and new line
+   static
+   {
+      BufferedImage temp = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+      temp.setRGB(0, 0, ONBLACK);
+      NEWLINE_MARK = temp;
+      
+      temp = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+      temp.setRGB(0, 0, BLANK);
+      SPACE_MARK = temp;
+   }
+
 
    /**
     * Convert from gray-scale image to a binary image, separating the
@@ -552,6 +568,7 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
       
       ArrayList<Image> characters = new ArrayList<Image>();
+      HashMap<Integer, Image> rowBuffer = new HashMap<Integer, Image>();
       int[][] labeled = labelConnectedComponents(pImage);
       HashMap<Integer, BoundingBox> labelBoxMap;
       labelBoxMap = new HashMap<Integer, BoundingBox>();
@@ -584,10 +601,14 @@ public class ImageProcessingLibrary
          }
       }
 
+      BoundingBox prev = null;
+      BoundingBox box = null;
+
       //Extract the character
       for (int key : labelBoxMap.keySet())
       {
-         BoundingBox box = labelBoxMap.get(key);
+         prev = box;
+         box = labelBoxMap.get(key);
          Image character = makeCharacter(labeled, key, box);
 
          if (character != null)
@@ -601,9 +622,32 @@ public class ImageProcessingLibrary
                //Reject components that are too big
                if ((charHeight < 24) && (charWidth < 42))
                {
+
+                  if(prev != null)
+                  {
+                     if (box.getMinRow() > (prev.getMinRow() + NORMAL_HEIGHT))
+                     {
+                        //Found a new line
+
+                        Set<Integer> keySet = rowBuffer.keySet();
+                        Integer[] keys = keySet.toArray(new Integer[keySet.size()]);
+
+                        Arrays.sort(keys);
+
+                        for (int i : keys)
+                        {
+                           characters.add(rowBuffer.get(i));
+                        }
+                        //TODO: add new line marker
+                        characters.add(NEWLINE_MARK);
+                        rowBuffer.clear();
+                     }
+                  }
+
+
                   //Normalize the character
                   character = normalize(character, box);
-                  characters.add(character);
+                  rowBuffer.put(box.getMinCol(), character);
                }
             }
          }
