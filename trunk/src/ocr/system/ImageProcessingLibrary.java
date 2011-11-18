@@ -613,43 +613,30 @@ public class ImageProcessingLibrary
 
          if (character != null)
          {
-            int charHeight = character.getHeight(null);
-            int charWidth = character.getWidth(null);
-
-            //Reject components that are too small
-            if ((charHeight > 16) && (charWidth > 2))
+            if (prev != null)
             {
-               //Reject components that are too big
-               if ((charHeight < 24) && (charWidth < 42))
+               if (box.getMinRow() > (prev.getMinRow() + NORMAL_HEIGHT))
                {
+                  //Found a new line
 
-                  if(prev != null)
+                  Set<Integer> keySet = rowBuffer.keySet();
+                  Integer[] keys = keySet.toArray(new Integer[keySet.size()]);
+
+                  Arrays.sort(keys);
+
+                  for (int i : keys)
                   {
-                     if (box.getMinRow() > (prev.getMinRow() + NORMAL_HEIGHT))
-                     {
-                        //Found a new line
-
-                        Set<Integer> keySet = rowBuffer.keySet();
-                        Integer[] keys = keySet.toArray(new Integer[keySet.size()]);
-
-                        Arrays.sort(keys);
-
-                        for (int i : keys)
-                        {
-                           characters.add(rowBuffer.get(i));
-                        }
-                        //TODO: add new line marker
-                        characters.add(NEWLINE_MARK);
-                        rowBuffer.clear();
-                     }
+                     characters.add(rowBuffer.get(i));
                   }
-
-
-                  //Normalize the character
-                  character = normalize(character, box);
-                  rowBuffer.put(box.getMinCol(), character);
+                  //TODO: add new line marker
+                  characters.add(NEWLINE_MARK);
+                  rowBuffer.clear();
                }
             }
+
+            //Normalize the character
+            character = normalize(character, box);
+            rowBuffer.put(box.getMinCol(), character);
          }
       }
 
@@ -679,30 +666,37 @@ public class ImageProcessingLibrary
 
       BufferedImage component = null;
       
-      if ((height > 0) && (width > 0))
+      //Reject components that are too small
+      if ((height > 16) && (width > 2))
       {
-         component = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-         int i;
-         int j;
-         //Scan for the label of our character
-         for (int row = 0; row < height; row++)
+         //Reject components that are too big
+         if ((height < 24) && (width < 42))
          {
-            i = row + minRow;
-            for (int col = 0; col < width; col++)
+            component = new BufferedImage(width, height,
+               BufferedImage.TYPE_INT_RGB);
+
+            int i;
+            int j;
+            //Scan for the label of our character
+            for (int row = 0; row < height; row++)
             {
-               j = col + minCol;
-               if (pLabel == pLabeled[i][j])
+               i = row + minRow;
+               for (int col = 0; col < width; col++)
                {
-                  component.setRGB(col, row, ONBLACK);
-               }
-               else
-               {
-                  component.setRGB(col, row, OFFWHITE);
+                  j = col + minCol;
+                  if (pLabel == pLabeled[i][j])
+                  {
+                     component.setRGB(col, row, ONBLACK);
+                  }
+                  else
+                  {
+                     component.setRGB(col, row, OFFWHITE);
+                  }
                }
             }
          }
       }
+      
       return component;
    }
 
