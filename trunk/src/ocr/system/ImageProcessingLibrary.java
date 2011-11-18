@@ -3,8 +3,8 @@ package ocr.system;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -568,7 +568,8 @@ public class ImageProcessingLibrary
       int height = image.getHeight();
       
       ArrayList<Image> characters = new ArrayList<Image>();
-      HashMap<Integer, Image> rowBuffer = new HashMap<Integer, Image>();
+      ArrayList<IntegerCharacterPair> lines = new ArrayList<IntegerCharacterPair>();
+      ArrayList<IntegerCharacterPair> rowBuffer = new ArrayList<IntegerCharacterPair>();
       int[][] labeled = labelConnectedComponents(pImage);
       HashMap<Integer, BoundingBox> labelBoxMap;
       labelBoxMap = new HashMap<Integer, BoundingBox>();
@@ -601,43 +602,49 @@ public class ImageProcessingLibrary
          }
       }
 
-      BoundingBox prev = null;
       BoundingBox box = null;
+      BoundingBox prev = null;
 
       //Extract the character
       for (int key : labelBoxMap.keySet())
       {
-         prev = box;
          box = labelBoxMap.get(key);
          Image character = makeCharacter(labeled, key, box);
 
          if (character != null)
          {
-            if (prev != null)
-            {
-               if (box.getMinRow() > (prev.getMinRow() + NORMAL_HEIGHT))
-               {
-                  //Found a new line
-
-                  Set<Integer> keySet = rowBuffer.keySet();
-                  Integer[] keys = keySet.toArray(new Integer[keySet.size()]);
-
-                  Arrays.sort(keys);
-
-                  for (int i : keys)
-                  {
-                     characters.add(rowBuffer.get(i));
-                  }
-                  //TODO: add new line marker
-                  characters.add(NEWLINE_MARK);
-                  rowBuffer.clear();
-               }
-            }
-
             //Normalize the character
             character = normalize(character, box);
-            rowBuffer.put(box.getMinCol(), character);
+            lines.add(new IntegerCharacterPair(box.getMinRow(), character, box));
          }
+      }
+
+      Collections.sort(lines, new ValueComparator());
+
+      for (IntegerCharacterPair i : lines)
+      {
+         prev = box;
+         box = i.getBox();
+         if (prev != null)
+         {
+            int lineSize = 5;
+            if (box.getMinRow() >= (prev.getMinRow() + lineSize))
+            {
+               //Found a new line
+
+               Collections.sort(rowBuffer, new ValueComparator());
+
+               for (IntegerCharacterPair j : rowBuffer)
+               {
+                  characters.add(j.getCharacterImage());
+               }
+               rowBuffer.clear();
+               characters.add(NEWLINE_MARK);
+            }
+         }
+
+         IntegerCharacterPair pair = new IntegerCharacterPair(box.getMinCol(), i.getCharacterImage(), null);
+         rowBuffer.add(pair);
       }
 
       return characters;
