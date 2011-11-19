@@ -30,6 +30,10 @@ public class OpticalCharacterRecognizer
          {
             text += "\n";
          }
+         else if (character == ImageProcessingLibrary.SPACE_MARK)
+         {
+            text += " ";
+         }
          else
          {
             FeatureExtractor extractor = new FeatureExtractor(character);
