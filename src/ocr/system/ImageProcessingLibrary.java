@@ -48,7 +48,7 @@ public class ImageProcessingLibrary
    public static Image threshold(Image pImage)
    {
       int color = 0;
-      int threshold = 100;
+      int threshold = 150;
       int red = 0;
       int green = 0;
       int blue = 0;
