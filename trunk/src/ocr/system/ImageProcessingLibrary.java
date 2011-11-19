@@ -664,6 +664,30 @@ public class ImageProcessingLibrary
          rowBuffer.add(pair);
       }
 
+      //Add the last row
+      Collections.sort(rowBuffer, new ValueComparator());
+
+      BoundingBox rowBox = null;
+      BoundingBox rowPrev = null;
+      for (IntegerCharacterPair j : rowBuffer)
+      {
+         rowPrev = rowBox;
+         rowBox = j.getBox();
+
+         if (rowPrev != null)
+         {
+            int spaceSize = 7;
+            int separation = rowBox.getMinCol() - rowPrev.getMaxCol();
+            if (separation >= spaceSize)
+            {
+               //Space found
+               characters.add(SPACE_MARK);
+            }
+         }
+
+         characters.add(j.getCharacterImage());
+      }
+
       return characters;
    }
 
