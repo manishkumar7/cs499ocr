@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,99 +48,18 @@ public class ImageProcessingLibrary
    public static Image threshold(Image pImage)
    {
       int color = 0;
-      int totalPixels = 0;
-      double totalThreshold = 0;
-      double totalMean = 0;
-      int backgroundPixels = 0;
-      int foregroundPixels = 0;
-      double backgroundMeanSum = 0;
-      int numPixels = 0;
-      double meanDiff = 0;
+      int threshold = 100;
+      int red = 0;
+      int green = 0;
+      int blue = 0;
+      int average = 0;
 
-      double backgroundMean = 0;
-      double foregroundMean = 0;
-      double backgroundWeight = 0;
-      double foregroundWeight = 0;
-
-      double currVariance = 0;
-      double betweenClassVariance = 0;
-      int threshold = 0;
-      
-      HashMap<Integer, Integer> histogram = new HashMap<Integer, Integer>();
-      
       BufferedImage image = (BufferedImage) pImage;
       int width = image.getWidth();
       int height = image.getHeight();
 
       BufferedImage binary = new BufferedImage(width, height,
          BufferedImage.TYPE_INT_RGB);
-
-      for (int row = 0; row < height; row++)
-      {
-         for (int col = 0; col < width; col++)
-         {
-            color = image.getRGB(col, row);
-
-            //Only focus on rgb
-            color = (color & 0x00ffffff);
-
-            //
-            // Create a histogram of the pixel intensities
-            //
-
-            //Map pixel intensities to their frequency
-            Integer tally = histogram.get(color);
-
-            //If the intensity has not yet been mapped
-            if (tally == null)
-            {
-               histogram.put(color, 1);
-            }
-            else
-            {
-               histogram.put(color, tally + 1);
-            }
-
-            //Count the total number of pixels
-            totalPixels++;
-            totalThreshold += color;
-         }
-      }
-      totalMean = totalThreshold / totalPixels;
-
-      List<Integer> keys = HelperLibrary.sortList(histogram.keySet());
-
-      //Loop through each threshold
-      for (Integer currThreshold : keys)
-      {
-         //Calculate background mean and weight
-         numPixels = histogram.get(currThreshold);
-         backgroundPixels += numPixels;
-         backgroundWeight = (double)backgroundPixels / totalPixels;
-
-         backgroundMeanSum += (numPixels * currThreshold);
-         backgroundMean = backgroundMeanSum / backgroundPixels;
-
-         //Calculate foreground mean and weight
-         foregroundPixels = totalPixels - backgroundPixels;
-         foregroundWeight = (double)foregroundPixels / totalPixels;
-         foregroundMean = (totalMean - backgroundMean) / foregroundPixels;
-
-         //Calculate the between class variance
-         meanDiff = backgroundMean - foregroundMean;
-         currVariance = (backgroundWeight * foregroundWeight) * 
-            Math.pow(meanDiff, 2);
-
-         //Maximize between class variance
-         if (currVariance > betweenClassVariance)
-         {
-            betweenClassVariance = currVariance;
-            threshold = currThreshold;
-         }
-      }
-
-      //Adjust the threshold
-      threshold += 7000000;
 
       //Use the calculated threshold to binarize the image
       for (int row = 0; row < height; row++)
@@ -153,7 +71,15 @@ public class ImageProcessingLibrary
             //Only focus on rgb
             color = (color & 0x00ffffff);
 
-            if (color > threshold)
+            //Get the individual r, g, and b
+            red = (color & 0x00ff0000) >> 16;
+            green = (color & 0x0000ff00) >> 8;
+            blue = (color & 0x000000ff);
+
+
+            average = (red + green + blue) / 3;
+
+            if (average > threshold)
             {
                binary.setRGB(col, row, OFFWHITE);
             }

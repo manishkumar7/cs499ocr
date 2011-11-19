@@ -58,7 +58,7 @@ public class DesktopOCR extends javax.swing.JFrame
          }
       });
 
-      mImagePathTextField.setText("C:\\test.jpg");
+      mImagePathTextField.setText("C:\\train.jpg");
 
       jLabel1.setText("Image location:");
 
@@ -75,19 +75,15 @@ public class DesktopOCR extends javax.swing.JFrame
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
                .addGroup(layout.createSequentialGroup()
-                  .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addContainerGap())
-               .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addGroup(layout.createSequentialGroup()
-                     .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                     .addGap(18, 18, 18)
-                     .addComponent(mOcrButton)
-                     .addGap(18, 18, 18)
-                     .addComponent(mTrainButton))
-                  .addGroup(layout.createSequentialGroup()
-                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                     .addContainerGap(418, Short.MAX_VALUE)))))
+                  .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addGap(18, 18, 18)
+                  .addComponent(mOcrButton)
+                  .addGap(18, 18, 18)
+                  .addComponent(mTrainButton))
+               .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +92,7 @@ public class DesktopOCR extends javax.swing.JFrame
             .addComponent(jLabel1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-               .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                .addComponent(mOcrButton)
                .addComponent(mTrainButton))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
