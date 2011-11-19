@@ -20,8 +20,8 @@ public class ImageProcessingLibrary
    public static final Integer ONBLACK = 0xff000000;//ON
    public static final Integer BLANK = 0xff0000ff;
 
-   public static final Integer NORMAL_HEIGHT = 22;
-   public static final Integer NORMAL_WIDTH = 42;
+   public static final Integer NORMAL_HEIGHT = 24;
+   public static final Integer NORMAL_WIDTH = 44;
 
    public static final Image NEWLINE_MARK;
    public static final Image SPACE_MARK;

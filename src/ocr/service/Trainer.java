@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
 import ocr.system.CharacterPrompter;
+import ocr.system.ImageProcessingLibrary;
 
 /**
  * Allows a user to supply knowledge base of feature point-character pairs.
@@ -55,17 +56,21 @@ public class Trainer
 
       for (Image character : characters)
       {
-         FeatureExtractor extractor = new FeatureExtractor(character);
-         extractor.run();
+         if ((character != ImageProcessingLibrary.NEWLINE_MARK)
+            && (character != ImageProcessingLibrary.SPACE_MARK))
+         {
+            FeatureExtractor extractor = new FeatureExtractor(character);
+            extractor.run();
 
-         String user = mPrompter.promptUser(character);
-         text += user;
+            String user = mPrompter.promptUser(character);
+            text += user;
 
-         //Associate the calculated feature point with the user input
-         CharacterFeaturePair pair = new CharacterFeaturePair(user, extractor.
-            getFeaturePoint());
+            //Associate the calculated feature point with the user input
+            CharacterFeaturePair pair = new CharacterFeaturePair(user, extractor.
+               getFeaturePoint());
 
-         mProxy.insertTrainingData(pair);
+            mProxy.insertTrainingData(pair);
+         }
       }
 
       mProxy.saveTraingData();
