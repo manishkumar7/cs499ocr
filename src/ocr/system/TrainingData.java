@@ -25,7 +25,10 @@ public class TrainingData
     */
    private static final TrainingData cInstance;
 
-   public final static String cFileName = "train";
+   /**
+    * The name of the file to store the training data in
+    */
+   public static final String cFileName = "train";
 
    /**
     * Initialize a TrainingData instance
@@ -59,11 +62,19 @@ public class TrainingData
       }
    }
 
+   /**
+    * Constructor for the singleton TrainingData
+    */
    private TrainingData()
    {
       mData = new ArrayList<CharacterFeaturePair>();
    }
 
+   /**
+    * Returns the singleton instance of TrainingData
+    *
+    * @return The instance of TrainingData
+    */
    public static TrainingData getInstance()
    {
       return cInstance;

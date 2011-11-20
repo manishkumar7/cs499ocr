@@ -13,41 +13,50 @@ public class Neighbors
    /**
     * The north neighbor pixel value
     */
-   Integer mNorth;
+   private Integer mNorth;
    /**
     * The north east neighbor pixel value
     */
-   Integer mNorthEast;
+   private Integer mNorthEast;
    /**
     * The east neighbor pixel value
     */
-   Integer mEast;
+   private Integer mEast;
    /**
     * The south east neighbor pixel value
     */
-   Integer mSouthEast;
+   private Integer mSouthEast;
    /**
     * The south neighbor pixel value
     */
-   Integer mSouth;
+   private Integer mSouth;
    /**
     * The south west neighbor pixel value
     */
-   Integer mSouthWest;
+   private Integer mSouthWest;
    /**
     * The west neighbor pixel value
     */
-   Integer mWest;
+   private Integer mWest;
    /**
     * The north west neighbor pixel value
     */
-   Integer mNorthWest;
+   private Integer mNorthWest;
 
    /**
     * A set containing the values of the neighbors
     */
    private Set<Integer> mNeighborValues;
 
+   /**
+    * Constructor for Neighbors
+    *
+    * @param pImage The image to get the neighbors from
+    * @param pWidth The width of the image
+    * @param pHeight The height of the image
+    * @param pRow The row location of the target pixel
+    * @param pCol The column location of the target pixel
+    */
    public Neighbors(int[][] pImage, int pWidth, int pHeight, int pRow, int pCol)
    {
       mNeighborValues = new HashSet<Integer>();
@@ -109,7 +118,11 @@ public class Neighbors
       }
    }
 
-
+   /**
+    * Returns the set containing the value of the neighboring pixels
+    *
+    * @return The set of values of the neighbor pixels
+    */
    public Set<Integer> getNeighborValues()
    {
       return mNeighborValues;

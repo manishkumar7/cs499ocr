@@ -3,7 +3,6 @@ package ocr.service;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collection;
-import ocr.system.ImageProcessingLibrary;
 import ocr.system.PixelHistogram;
 
 /**
@@ -19,14 +18,6 @@ public class FeatureExtractor
     */
    private Image mCharacter;
    /**
-    * The contour of the character
-    */
-   private Image mContour;
-   /**
-    * The character thinned
-    */
-   private Image mThin;
-   /**
     * The collection of features extracted from the character
     */
    private Collection<Double> mFeaturePoint;
@@ -41,8 +32,6 @@ public class FeatureExtractor
    {
       mFeaturePoint = new ArrayList<Double>();
       mCharacter = pCharacter;
-      mContour = ImageProcessingLibrary.traceContour(pCharacter);
-      mThin = ImageProcessingLibrary.thin(pCharacter);
    }
 
    /**
