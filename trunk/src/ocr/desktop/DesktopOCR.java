@@ -133,17 +133,29 @@ public class DesktopOCR extends javax.swing.JFrame
    private Image retrieveImage()
    {
       File image = null;
-      JFileChooser chooser = new JFileChooser(mStart);
+      JFileChooser chooser = null;
       Image document = null;
 
-      chooser.addChoosableFileFilter(new ImageFilter());
-      chooser.setAcceptAllFileFilterUsed(false);
-
-      int val = chooser.showOpenDialog(DesktopOCR.this);
-      if (val == JFileChooser.APPROVE_OPTION)
+      if (mStart.isDirectory())
       {
-         image = chooser.getSelectedFile();
-         document = new ImageRetriever(image).readImage();
+         chooser = new JFileChooser(mStart);
+      }
+      else
+      {
+         chooser = new JFileChooser();
+      }
+
+      if (chooser != null)
+      {
+         chooser.addChoosableFileFilter(new ImageFilter());
+         chooser.setAcceptAllFileFilterUsed(false);
+
+         int val = chooser.showOpenDialog(DesktopOCR.this);
+         if (val == JFileChooser.APPROVE_OPTION)
+         {
+            image = chooser.getSelectedFile();
+            document = new ImageRetriever(image).readImage();
+         }
       }
 
       return document;
