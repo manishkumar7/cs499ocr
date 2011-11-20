@@ -21,11 +21,17 @@ import ocr.system.ImageRetriever;
  */
 public class DesktopOCR extends javax.swing.JFrame
 {
-
+   /**
+    * Indicates where the JFileChooser should begin
+    */
+   private File mStart;
+   
     /** Creates new form DesktopOCR */
     public DesktopOCR()
     {
         initComponents();
+        mStart = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Images");
     }
 
     /** This method is called from within the constructor to
@@ -127,7 +133,7 @@ public class DesktopOCR extends javax.swing.JFrame
    private Image retrieveImage()
    {
       File image = null;
-      JFileChooser chooser = new JFileChooser();
+      JFileChooser chooser = new JFileChooser(mStart);
       Image document = null;
 
       chooser.addChoosableFileFilter(new ImageFilter());
