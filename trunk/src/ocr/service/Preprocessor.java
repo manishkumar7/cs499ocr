@@ -21,6 +21,7 @@ public class Preprocessor
     */
    public static Collection<Image> preprocess(Image pImage)
    {
+      ImageDisplayer.displayImage(pImage);
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
       document = ImageProcessingLibrary.trim(document);
