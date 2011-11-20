@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
  */
 public class ImageRetriever
 {
+   /**
+    * The file path to the image
+    */
    private File mPath;
 
    /**

@@ -94,43 +94,6 @@ public class ImageProcessingLibrary
    }
 
    /**
-    * Removes salt-and-pepper noise from the binary image.
-    *
-    * @param pImage The binary image to process.
-    * @return The processed image.
-    */
-   public static Image smoothNoise(Image pImage)
-   {
-      BufferedImage image = (BufferedImage) pImage;
-      int width = image.getWidth();
-      int height = image.getHeight();
-
-      BufferedImage binary = new BufferedImage(width, height,
-         BufferedImage.TYPE_INT_RGB);
-
-      Filter pixelFilter = null;
-
-      for (int row = 0; row < height; row++)
-      {
-         for (int col = 0; col < width; col++)
-         {
-            Integer val = image.getRGB(col, row);
-            binary.setRGB(col, row, val);
-         }
-      }
-
-      for (int row = 0; row < height; row++)
-      {
-         for (int col = 0; col < width; col++)
-         {
-            pixelFilter = new Filter(binary, row, col);
-            binary.setRGB(col, row, pixelFilter.getMedian());
-         }
-      }
-      return binary;
-   }
-
-   /**
     * Calculates the skew (The angle between horizontal edge of the image
     * and the orientation of the text on the page. aka tilt) of the binary
     * image and rotates to compensate.
@@ -720,39 +683,5 @@ public class ImageProcessingLibrary
       }
 
       return normal;
-   }
-
-   /**
-    * Traces the contour of the foreground and returns the trace of a binary
-    * image.
-    *
-    * @param pImage The binary image to process.
-    * @return The processed image.
-    */
-   public static Image traceContour(Image pImage)
-   {
-      return null;
-   }
-
-   /**
-    * Thins the foreground pixels or a binary image.
-    *
-    * @param pImage The binary image to process.
-    * @return The processed image.
-    */
-   public static Image thin(Image pImage)
-   {
-      return null;
-   }
-
-   /**
-    * Reverses the foreground and background of a binary image.
-    * 
-    * @param pImage The binary image to process.
-    * @return The processed image.
-    */
-   public static Image invert(Image pImage)
-   {
-      return null;
    }
 }

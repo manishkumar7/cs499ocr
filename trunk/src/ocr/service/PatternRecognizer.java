@@ -76,6 +76,12 @@ public class PatternRecognizer
       quickSort(0, mDistances.size() - 1);
    }
 
+   /**
+    * The quick sort algorithm for use on mDistances.
+    *
+    * @param pLowerBound The lowest index to sort from
+    * @param pUpperBound The highest index to sort to
+    */
    public void quickSort(int pLowerBound, int pUpperBound)
    {
       ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;
@@ -123,6 +129,12 @@ public class PatternRecognizer
       }
    }
 
+   /**
+    * Swaps the content of the two indexes indicated.
+    *
+    * @param i The index of the first value to swap
+    * @param j The index of the second value to swap
+    */
    private void swap(int i, int j)
    {
       ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;

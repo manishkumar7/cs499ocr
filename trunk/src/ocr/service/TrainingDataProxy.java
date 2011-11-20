@@ -14,8 +14,14 @@ import ocr.system.TrainingData;
  */
 public class TrainingDataProxy
 {
-   TrainingData mTrainingBase;
+   /**
+    * The handle on the training data
+    */
+   private TrainingData mTrainingBase;
 
+   /**
+    * Constructor for TrainingDataProxy
+    */
    public TrainingDataProxy()
    {
       mTrainingBase = TrainingData.getInstance();
@@ -31,6 +37,9 @@ public class TrainingDataProxy
       mTrainingBase.insert(pData);
    }
 
+   /**
+    * Saves the training data at its source location.
+    */
    public void saveTraingData()
    {
       try
@@ -47,6 +56,9 @@ public class TrainingDataProxy
       }
    }
 
+   /**
+    * Deletes the information stored in the training data.
+    */
    public void deleteTrainingData()
    {
       File file = new File(TrainingData.cFileName);

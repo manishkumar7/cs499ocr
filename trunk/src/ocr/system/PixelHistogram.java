@@ -12,11 +12,28 @@ import java.util.Collection;
  */
 public class PixelHistogram
 {
-   Double mArea;
-   Collection<Double> mColumnHistogram;
-   Collection<Double> mRowHistogram;
-   Image mImage;
+   /**
+    * The number of ON pixels in the image
+    */
+   private Double mArea;
+   /**
+    * The number of ON pixels for each column of the image
+    */
+   private Collection<Double> mColumnHistogram;
+   /**
+    * The number of ON pixels for each row of the image
+    */
+   private Collection<Double> mRowHistogram;
+   /**
+    * The image to generate histograms from
+    */
+   private Image mImage;
 
+   /**
+    * Constructor for PixelHistogram
+    *
+    * @param pImage The image to generate histograms from
+    */
    public PixelHistogram(Image pImage)
    {
       mImage = pImage;
@@ -27,6 +44,9 @@ public class PixelHistogram
       initialize();
    }
 
+   /**
+    * Makes the necessary calculations to make the histograms.
+    */
    private void initialize()
    {
       BufferedImage image = (BufferedImage) mImage;
@@ -36,6 +56,7 @@ public class PixelHistogram
       ArrayList<Double> colHistogram = (ArrayList<Double>) mColumnHistogram;
       ArrayList<Double> rowHistogram = (ArrayList<Double>) mRowHistogram;
 
+      //Perform all the calculations with one scan of the image
       for (int row = 0; row < height; row++)
       {
          //Count the number of black pixels in each row
@@ -61,17 +82,32 @@ public class PixelHistogram
          rowHistogram.add(rowCount);
       }
    }
-   
+
+   /**
+    * Returns the number of ON pixels in the image.
+    *
+    * @return The area of the image
+    */
    public Double getArea()
    {
       return mArea;
    }
-   
+
+   /**
+    * Returns the number of ON pixels for each column.
+    *
+    * @return The column histogram
+    */
    public Collection<Double> getColumnHistogram()
    {
       return mColumnHistogram;
    }
 
+   /**
+    * Returns the number of ON pixels for each row.
+    *
+    * @return The row histogram
+    */
    public Collection<Double> getRowHistogram()
    {
       return mRowHistogram;
