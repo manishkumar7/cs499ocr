@@ -124,9 +124,9 @@ public class ImageProcessingLibrary
          testAngle2 = testAngle + 1;
 
          Image current = rotate(pImage, testAngle);
-         variance = variance(FeatureExtractionLibrary.rowHistogram(current));
+         variance = variance(new PixelHistogram(current).getRowHistogram());
          Image current2 = rotate(pImage, testAngle2);
-         variance2 = variance(FeatureExtractionLibrary.rowHistogram(current2));
+         variance2 = variance(new PixelHistogram(current2).getRowHistogram());
 
          //Decrease and Conquer! Assumes there is a single maxima.
          if (variance > variance2)
@@ -153,6 +153,8 @@ public class ImageProcessingLibrary
          }
          diff = Math.abs(prevTest - testAngle);
       }
+
+      System.out.println("Image was skewed " + correctAngle + " degrees");
 
       return correct;
    }
