@@ -27,6 +27,16 @@ public class ImageRetriever
    }
 
    /**
+    * Constructor for the ImageReader with the File to read as a parameter
+    *
+    * @param pPath The file to read the image from
+    */
+   public ImageRetriever(File pPath)
+   {
+      mPath = pPath;
+   }
+
+   /**
     * Read the image from the file path given and return the contents in
     * an Image object.
     * 

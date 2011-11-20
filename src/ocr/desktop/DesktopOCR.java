@@ -7,6 +7,9 @@
 package ocr.desktop;
 
 import java.awt.Image;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import ocr.service.OpticalCharacterRecognizer;
 import ocr.service.Trainer;
 import ocr.system.ImageRetriever;
@@ -36,11 +39,10 @@ public class DesktopOCR extends javax.swing.JFrame
 
       mOcrButton = new javax.swing.JButton();
       mTrainButton = new javax.swing.JButton();
-      mImagePathTextField = new javax.swing.JTextField();
-      jLabel1 = new javax.swing.JLabel();
       jScrollPane2 = new javax.swing.JScrollPane();
       jScrollPane1 = new javax.swing.JScrollPane();
       mTextArea = new javax.swing.JTextArea();
+      jLabel1 = new javax.swing.JLabel();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,15 +60,13 @@ public class DesktopOCR extends javax.swing.JFrame
          }
       });
 
-      mImagePathTextField.setText("C:\\test.jpg");
-
-      jLabel1.setText("Image location:");
-
       mTextArea.setColumns(20);
       mTextArea.setRows(5);
       jScrollPane1.setViewportView(mTextArea);
 
       jScrollPane2.setViewportView(jScrollPane1);
+
+      jLabel1.setText("Extracted Text:");
 
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
@@ -74,28 +74,26 @@ public class DesktopOCR extends javax.swing.JFrame
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addGroup(layout.createSequentialGroup()
-                  .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addGap(18, 18, 18)
-                  .addComponent(mOcrButton)
-                  .addGap(18, 18, 18)
-                  .addComponent(mTrainButton))
-               .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                  .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                  .addComponent(mTrainButton)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                  .addComponent(mOcrButton)))
+            .addContainerGap())
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jLabel1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-               .addComponent(mImagePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addComponent(mOcrButton)
-               .addComponent(mTrainButton))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGap(26, 26, 26)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+               .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                  .addComponent(mOcrButton)
+                  .addComponent(mTrainButton))
+               .addComponent(jLabel1))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
             .addContainerGap())
       );
@@ -105,14 +103,20 @@ public class DesktopOCR extends javax.swing.JFrame
 
     private void mOcrButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_mOcrButtonActionPerformed
     {//GEN-HEADEREND:event_mOcrButtonActionPerformed
-       mTextArea.setText(OpticalCharacterRecognizer.extractString(
-          retrieveImage()));
+       Image image = retrieveImage();
+       if (image != null)
+       {
+          mTextArea.setText(OpticalCharacterRecognizer.extractString(image));
+       }
     }//GEN-LAST:event_mOcrButtonActionPerformed
 
     private void mTrainButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_mTrainButtonActionPerformed
     {//GEN-HEADEREND:event_mTrainButtonActionPerformed
-       mTextArea.setText(new Trainer(new DesktopPrompter(), retrieveImage()).
-          train());
+       Image image = retrieveImage();
+       if (image != null)
+       {
+          mTextArea.setText(new Trainer(new DesktopPrompter(), image).train());
+       }
     }//GEN-LAST:event_mTrainButtonActionPerformed
 
     /**
@@ -120,10 +124,24 @@ public class DesktopOCR extends javax.swing.JFrame
      *
      * @return The image at the location given by the user
      */
-    private Image retrieveImage()
-    {
-       return new ImageRetriever(mImagePathTextField.getText()).readImage();
-    }
+   private Image retrieveImage()
+   {
+      File image = null;
+      JFileChooser chooser = new JFileChooser();
+      Image document = null;
+
+      chooser.addChoosableFileFilter(new ImageFilter());
+      chooser.setAcceptAllFileFilterUsed(false);
+
+      int val = chooser.showOpenDialog(DesktopOCR.this);
+      if (val == JFileChooser.APPROVE_OPTION)
+      {
+         image = chooser.getSelectedFile();
+         document = new ImageRetriever(image).readImage();
+      }
+
+      return document;
+   }
 
     /**
     * Run the OCR program for the desktop user.
@@ -144,10 +162,78 @@ public class DesktopOCR extends javax.swing.JFrame
    private javax.swing.JLabel jLabel1;
    private javax.swing.JScrollPane jScrollPane1;
    private javax.swing.JScrollPane jScrollPane2;
-   private javax.swing.JTextField mImagePathTextField;
    private javax.swing.JButton mOcrButton;
    private javax.swing.JTextArea mTextArea;
    private javax.swing.JButton mTrainButton;
    // End of variables declaration//GEN-END:variables
 
+}
+
+/**
+ * Defines a image only filter for the JFileChooser
+ * 
+ * @author Devin
+ */
+class ImageFilter
+   extends FileFilter
+{
+   /**
+    * Defines the conditions for which files or directories should
+    * be shown in the JFileChooser.
+    *
+    * @param f The file to check the conditions for
+    * @return true if the file or directory should be displayed
+    */
+   @Override
+   public boolean accept(File f)
+   {
+      boolean accept = false;
+      String extension;
+      
+      if (f.isDirectory())
+      {
+         accept = true;
+      }
+
+      extension = getExtension(f);
+
+      if (".jpg".equals(extension) ||
+          ".png".equals(extension))
+      {
+         accept = true;
+      }
+
+      return accept;
+   }
+
+   /**
+    * Returns a description for this file filter
+    *
+    * @return The filter description
+    */
+   @Override
+   public String getDescription()
+   {
+      return "Image files only";
+   }
+
+   /**
+    * Returns the file extension of a file.
+    *
+    * @param f The file to get the extension of
+    * @return The file extension
+    */
+   private String getExtension(File f)
+   {
+      String extension = null;
+      String name = f.getName();
+
+      int i = name.lastIndexOf('.');
+
+      if ((i < name.length()) && (i > 0))
+      {
+         extension = name.substring(i);
+      }
+      return extension;
+   }
 }
