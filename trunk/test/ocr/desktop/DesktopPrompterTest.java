@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ocr.desktop;
 
+import ocr.system.ImageRetriever;
+import java.io.File;
 import java.awt.Image;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,10 +14,11 @@ import static org.junit.Assert.*;
  *
  * @author Devin
  */
-public class DesktopPrompterTest {
-
-    public DesktopPrompterTest() {
-    }
+public class DesktopPrompterTest
+{
+   public DesktopPrompterTest()
+   {
+   }
 
    @BeforeClass
    public static void setUpClass()
@@ -34,13 +32,15 @@ public class DesktopPrompterTest {
    {
    }
 
-    @Before
-    public void setUp() {
-    }
+   @Before
+   public void setUp()
+   {
+   }
 
-    @After
-    public void tearDown() {
-    }
+   @After
+   public void tearDown()
+   {
+   }
 
    /**
     * Test of promptUser method, of class DesktopPrompter.
@@ -49,13 +49,12 @@ public class DesktopPrompterTest {
    public void testPromptUser()
    {
       System.out.println("promptUser");
-      Image pImage = null;
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
       DesktopPrompter instance = new DesktopPrompter();
-      String expResult = "";
+      String expResult = "a";
       String result = instance.promptUser(pImage);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
-
 }
