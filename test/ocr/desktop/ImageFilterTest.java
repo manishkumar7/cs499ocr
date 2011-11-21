@@ -47,13 +47,24 @@ public class ImageFilterTest
    public void testAccept()
    {
       System.out.println("accept");
-      File f = null;
+      File f = new File("C:\\Users\\Public\\Pictures\\Sample Pictures\\"
+         + "desert.jpg");
       ImageFilter instance = new ImageFilter();
-      boolean expResult = false;
+      boolean expResult = true;
       boolean result = instance.accept(f);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      f = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\Doman Domain\\"
+         + "Classes\\Senior Project\\Design\\systemUML.png");
+      expResult = true;
+      result = instance.accept(f);
+      assertEquals(expResult, result);
+
+      f = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\Doman Domain\\"
+         + "Classes\\Senior Project\\Design\\systemUML.uxf");
+      expResult = false;
+      result = instance.accept(f);
+      assertEquals(expResult, result);
    }
 
    /**
@@ -64,10 +75,8 @@ public class ImageFilterTest
    {
       System.out.println("getDescription");
       ImageFilter instance = new ImageFilter();
-      String expResult = "";
+      String expResult = "Image files only";
       String result = instance.getDescription();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
