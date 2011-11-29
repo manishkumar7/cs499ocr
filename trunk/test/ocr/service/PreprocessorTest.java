@@ -1,5 +1,8 @@
 package ocr.service;
 
+import ocr.system.ImageProcessingLibrary;
+import ocr.system.ImageRetriever;
+import java.io.File;
 import java.awt.Image;
 import java.util.Collection;
 import org.junit.After;
@@ -48,11 +51,17 @@ public class PreprocessorTest
    public void testPreprocess()
    {
       System.out.println("preprocess");
-      Image pImage = null;
-      Collection expResult = null;
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
+      Image document = ImageProcessingLibrary.threshold(pImage);
+      document = ImageProcessingLibrary.correctSkew(document);
+      document = ImageProcessingLibrary.trim(document);
+      
+      Collection expResult = ImageProcessingLibrary.extractCharacters(document);
+      expResult.add(document);
       Collection result = Preprocessor.preprocess(pImage);
+
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
