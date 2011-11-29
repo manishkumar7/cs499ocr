@@ -17,23 +17,23 @@ public class PatternRecognizer
    /**
     * The feature point to associate a character with
     */
-   private Collection<Double> mFeaturePoint;
+   protected Collection<Double> mFeaturePoint;
    /**
     * The character determined from the feature point
     */
-   private String mCharacter;
+   protected String mCharacter;
    /**
     * The training data to compare with
     */
-   private Collection<CharacterFeaturePair> mTrainingData;
+   protected Collection<CharacterFeaturePair> mTrainingData;
    /**
     * The calculated distance from the feature point to the training points
     */
-   private Collection<DistanceCharacterPair> mDistances;
+   protected Collection<DistanceCharacterPair> mDistances;
    /**
     * Used to obtain the training data
     */
-   private TrainingDataProxy mProxy;
+   protected TrainingDataProxy mProxy;
 
    /**
     * Constructor for the PatternRecognizer with the feature point as
@@ -82,7 +82,7 @@ public class PatternRecognizer
     * @param pLowerBound The lowest index to sort from
     * @param pUpperBound The highest index to sort to
     */
-   public void quickSort(int pLowerBound, int pUpperBound)
+   private void quickSort(int pLowerBound, int pUpperBound)
    {
       ArrayList<DistanceCharacterPair> list = (ArrayList<DistanceCharacterPair>) mDistances;
       int i = pLowerBound;
