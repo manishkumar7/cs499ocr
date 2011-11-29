@@ -1,5 +1,6 @@
 package ocr.service;
 
+import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,33 +41,16 @@ public class PatternRecognizerTest
    }
 
    /**
-    * Test of quickSort method, of class PatternRecognizer.
-    */
-   @Test
-   public void testQuickSort()
-   {
-      System.out.println("quickSort");
-      int pLowerBound = 0;
-      int pUpperBound = 0;
-      PatternRecognizer instance = null;
-      instance.quickSort(pLowerBound, pUpperBound);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
-   }
-
-   /**
     * Test of getCharacter method, of class PatternRecognizer.
     */
    @Test
    public void testGetCharacter()
    {
       System.out.println("getCharacter");
-      PatternRecognizer instance = null;
-      String expResult = "";
+      PatternRecognizer instance = new MockPatternRecognizer(null);
+      String expResult = "zed";
       String result = instance.getCharacter();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -76,9 +60,25 @@ public class PatternRecognizerTest
    public void testRun()
    {
       System.out.println("run");
-      PatternRecognizer instance = null;
+      MockPatternRecognizer instance = new MockPatternRecognizer(null);
       instance.run();
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      assertEquals(1, instance.test);
+   }
+}
+
+class MockPatternRecognizer
+   extends PatternRecognizer
+
+{
+   public static int test = 0;
+   public MockPatternRecognizer(Collection<Double> pFeaturePoint)
+   {
+      super(pFeaturePoint);
+      mCharacter = "zed";
+   }
+
+   public void run()
+   {
+      test++;;
    }
 }

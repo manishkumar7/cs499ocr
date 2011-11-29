@@ -1,5 +1,10 @@
 package ocr.service;
 
+import java.util.ArrayList;
+import ocr.system.PixelHistogram;
+import java.awt.Image;
+import java.io.File;
+import ocr.system.ImageRetriever;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,12 +52,26 @@ public class FeatureExtractorTest
    public void testGetFeaturePoint()
    {
       System.out.println("getFeaturePoint");
-      FeatureExtractor instance = null;
-      Collection expResult = null;
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
+
+      FeatureExtractor instance = new FeatureExtractor(pImage);
+      instance.run();
+      PixelHistogram hist = new PixelHistogram(pImage);
+      Collection expResult = new ArrayList<Double>();
+      expResult.add(hist.getArea());
+      for (double i : hist.getColumnHistogram())
+      {
+         expResult.add(i);
+      }
+      for (double i : hist.getRowHistogram())
+      {
+         expResult.add(i);
+      }
+      
       Collection result = instance.getFeaturePoint();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -62,9 +81,26 @@ public class FeatureExtractorTest
    public void testRun()
    {
       System.out.println("run");
-      FeatureExtractor instance = null;
+
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+         + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
+      FeatureExtractor instance = new FeatureExtractor(pImage);
       instance.run();
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      PixelHistogram hist = new PixelHistogram(pImage);
+      Collection expResult = new ArrayList<Double>();
+      expResult.add(hist.getArea());
+      for (double i : hist.getColumnHistogram())
+      {
+         expResult.add(i);
+      }
+      for (double i : hist.getRowHistogram())
+      {
+         expResult.add(i);
+      }
+
+      Collection result = instance.getFeaturePoint();
+      assertEquals(expResult, result);
    }
 }
