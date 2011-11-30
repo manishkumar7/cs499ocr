@@ -46,11 +46,13 @@ public class BoundingBoxTest
    public void testSetRow()
    {
       System.out.println("setRow");
-      int pRow = 0;
+      int pRow = 3;
       BoundingBox instance = new BoundingBox();
       instance.setRow(pRow);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      boolean expResult = (pRow == instance.getMinRow()) || 
+         (pRow == instance.getMaxRow());
+      assertTrue(expResult);
    }
 
    /**
@@ -60,11 +62,13 @@ public class BoundingBoxTest
    public void testSetCol()
    {
       System.out.println("setCol");
-      int pCol = 0;
+      int pCol = 4;
       BoundingBox instance = new BoundingBox();
       instance.setCol(pCol);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      boolean expResult = (pCol == instance.getMinCol())
+         || (pCol == instance.getMaxCol());
+      assertTrue(expResult);
    }
 
    /**
@@ -75,11 +79,9 @@ public class BoundingBoxTest
    {
       System.out.println("getMinRow");
       BoundingBox instance = new BoundingBox();
-      int expResult = 0;
+      int expResult = 999999999;
       int result = instance.getMinRow();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -90,11 +92,9 @@ public class BoundingBoxTest
    {
       System.out.println("getMaxRow");
       BoundingBox instance = new BoundingBox();
-      int expResult = 0;
+      int expResult = -1;
       int result = instance.getMaxRow();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -105,11 +105,9 @@ public class BoundingBoxTest
    {
       System.out.println("getMinCol");
       BoundingBox instance = new BoundingBox();
-      int expResult = 0;
+      int expResult = 999999999;
       int result = instance.getMinCol();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -120,10 +118,8 @@ public class BoundingBoxTest
    {
       System.out.println("getMaxCol");
       BoundingBox instance = new BoundingBox();
-      int expResult = 0;
+      int expResult = -1;
       int result = instance.getMaxCol();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
