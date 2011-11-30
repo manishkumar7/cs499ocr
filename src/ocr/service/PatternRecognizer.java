@@ -59,12 +59,15 @@ public class PatternRecognizer
       //Go through the training data
       for (CharacterFeaturePair train : mTrainingData)
       {
-         double distance = distance(mFeaturePoint, train.getFeaturePoint());
-         
-         //Store the calculated distance
-         DistanceCharacterPair pair = new DistanceCharacterPair(train.
-            getCharacter(), distance);
-         mDistances.add(pair);
+         if (train != null)
+         {
+            double distance = distance(mFeaturePoint, train.getFeaturePoint());
+
+            //Store the calculated distance
+            DistanceCharacterPair pair = new DistanceCharacterPair(train.
+               getCharacter(), distance);
+            mDistances.add(pair);
+         }
       }
    }
 

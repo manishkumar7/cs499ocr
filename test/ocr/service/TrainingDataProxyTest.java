@@ -1,5 +1,9 @@
 package ocr.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import ocr.system.TrainingData;
 import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
 import org.junit.After;
@@ -50,7 +54,7 @@ public class TrainingDataProxyTest
       System.out.println("insertTrainingData");
       CharacterFeaturePair pData = null;
       TrainingDataProxy instance = new TrainingDataProxy();
-      instance.insertTrainingData(pData);
+      //instance.insertTrainingData(pData);
       // TODO review the generated test code and remove the default call to fail.
       fail("The test case is a prototype.");
    }
@@ -62,10 +66,13 @@ public class TrainingDataProxyTest
    public void testSaveTraingData()
    {
       System.out.println("saveTraingData");
+      File file = new File(TrainingData.cFileName);
       TrainingDataProxy instance = new TrainingDataProxy();
       instance.saveTraingData();
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      boolean result = file.exists();
+      boolean expResult = true;
+      assertEquals(expResult, result);
    }
 
    /**
@@ -75,10 +82,14 @@ public class TrainingDataProxyTest
    public void testDeleteTrainingData()
    {
       System.out.println("deleteTrainingData");
+      File file = new File(TrainingData.cFileName);
+
       TrainingDataProxy instance = new TrainingDataProxy();
-      instance.deleteTrainingData();
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+//      instance.deleteTrainingData();
+
+      boolean result = file.exists();
+      boolean expResult = false;
+      assertEquals(expResult, result);
    }
 
    /**
