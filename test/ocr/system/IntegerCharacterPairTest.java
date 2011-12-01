@@ -1,6 +1,6 @@
 package ocr.system;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,12 +47,10 @@ public class IntegerCharacterPairTest
    public void testGetValue()
    {
       System.out.println("getValue");
-      IntegerCharacterPair instance = null;
-      Integer expResult = null;
+      IntegerCharacterPair instance = new IntegerCharacterPair(4, null, null);
+      Integer expResult = 4;
       Integer result = instance.getValue();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -62,12 +60,13 @@ public class IntegerCharacterPairTest
    public void testGetCharacterImage()
    {
       System.out.println("getCharacterImage");
-      IntegerCharacterPair instance = null;
-      Image expResult = null;
-      Image result = instance.getCharacterImage();
+      BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+      img.setRGB(0, 0, 0xff000000);
+      IntegerCharacterPair instance = new IntegerCharacterPair(null, img, null);
+      BufferedImage charImg = (BufferedImage) instance.getCharacterImage();
+      Integer expResult = 0xff000000;
+      Integer result = charImg.getRGB(0, 0);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -77,11 +76,10 @@ public class IntegerCharacterPairTest
    public void testGetBox()
    {
       System.out.println("getBox");
-      IntegerCharacterPair instance = null;
-      BoundingBox expResult = null;
+      BoundingBox box = new BoundingBox();
+      IntegerCharacterPair instance = new IntegerCharacterPair(null, null, box);
+      BoundingBox expResult = box;
       BoundingBox result = instance.getBox();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
