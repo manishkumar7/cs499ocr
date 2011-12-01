@@ -1,5 +1,7 @@
 package ocr.system;
 
+import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.util.Collection;
 import org.junit.After;
@@ -48,12 +50,12 @@ public class ImageProcessingLibraryTest
    public void testThreshold()
    {
       System.out.println("threshold");
-      Image pImage = null;
-      Image expResult = null;
-      Image result = ImageProcessingLibrary.threshold(pImage);
+      BufferedImage pImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+      pImage.setRGB(0, 0, 0xff303030);
+      BufferedImage doc = (BufferedImage) ImageProcessingLibrary.threshold(pImage);
+      Integer expResult = 0xff000000;
+      Integer result = doc.getRGB(0, 0);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -78,12 +80,13 @@ public class ImageProcessingLibraryTest
    public void testMean()
    {
       System.out.println("mean");
-      Collection<Double> pData = null;
-      double expResult = 0.0;
+      Collection<Double> pData = new ArrayList<Double>();
+      pData.add(3.0);
+      pData.add(5.0);
+      pData.add(212.0);
+      double expResult = (3 + 5 + 212) / 3.0;
       double result = ImageProcessingLibrary.mean(pData);
       assertEquals(expResult, result, 0.0);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -93,12 +96,13 @@ public class ImageProcessingLibraryTest
    public void testVariance()
    {
       System.out.println("variance");
-      Collection<Double> pData = null;
-      double expResult = 0.0;
+      Collection<Double> pData = new ArrayList<Double>();
+      pData.add(3.0);
+      pData.add(5.0);
+      pData.add(212.0);
+      double expResult = 9614.88888888889;
       double result = ImageProcessingLibrary.variance(pData);
       assertEquals(expResult, result, 0.0);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
