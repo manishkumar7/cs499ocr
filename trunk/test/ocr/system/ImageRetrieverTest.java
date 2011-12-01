@@ -1,5 +1,7 @@
 package ocr.system;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.awt.Image;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,11 +49,20 @@ public class ImageRetrieverTest
    public void testReadImage()
    {
       System.out.println("readImage");
-      ImageRetriever instance = null;
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      ImageRetriever instance = new ImageRetriever(img);
       Image expResult = null;
+      try
+      {
+         expResult = ImageIO.read(img);
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
       Image result = instance.readImage();
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      ImageAssert.isEqual(expResult, result);
    }
 }
