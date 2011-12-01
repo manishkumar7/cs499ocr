@@ -1,5 +1,8 @@
 package ocr.system;
 
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import java.awt.Image;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,20 +50,30 @@ public class CharacterPrompterTest
    public void testPromptUser()
    {
       System.out.println("promptUser");
-      Image pImage = null;
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
       CharacterPrompter instance = new CharacterPrompterImpl();
-      String expResult = "";
+      String expResult = "a";
       String result = instance.promptUser(pImage);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    public class CharacterPrompterImpl implements CharacterPrompter
    {
       public String promptUser(Image pImage)
       {
-         return "";
+         ImageIcon icon = new ImageIcon(pImage);
+         String userInput = (String) JOptionPane.showInputDialog(
+            null,
+            "What character(s) do you see?",
+            "Character Prompter",
+            JOptionPane.PLAIN_MESSAGE,
+            icon,
+            null,
+            null);
+
+         return userInput;
       }
    }
 }

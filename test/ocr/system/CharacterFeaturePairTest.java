@@ -1,5 +1,6 @@
 package ocr.system;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,12 +48,10 @@ public class CharacterFeaturePairTest
    public void testGetCharacter()
    {
       System.out.println("getCharacter");
-      CharacterFeaturePair instance = null;
-      String expResult = "";
+      CharacterFeaturePair instance = new CharacterFeaturePair("zed", null);
+      String expResult = "zed";
       String result = instance.getCharacter();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -62,11 +61,11 @@ public class CharacterFeaturePairTest
    public void testGetFeaturePoint()
    {
       System.out.println("getFeaturePoint");
-      CharacterFeaturePair instance = null;
-      Collection expResult = null;
+      ArrayList<Double> list = new ArrayList<Double>();
+      list.add(2.0);
+      CharacterFeaturePair instance = new CharacterFeaturePair(null, list);
+      Collection expResult = list;
       Collection result = instance.getFeaturePoint();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }

@@ -46,12 +46,10 @@ public class DistanceCharacterPairTest
    public void testGetCharacter()
    {
       System.out.println("getCharacter");
-      DistanceCharacterPair instance = null;
-      String expResult = "";
+      DistanceCharacterPair instance = new DistanceCharacterPair("zed", 0.0);
+      String expResult = "zed";
       String result = instance.getCharacter();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -61,11 +59,9 @@ public class DistanceCharacterPairTest
    public void testGetDistance()
    {
       System.out.println("getDistance");
-      DistanceCharacterPair instance = null;
-      double expResult = 0.0;
+      DistanceCharacterPair instance = new DistanceCharacterPair(null, 3.0);
+      double expResult = 3.0;
       double result = instance.getDistance();
       assertEquals(expResult, result, 0.0);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
