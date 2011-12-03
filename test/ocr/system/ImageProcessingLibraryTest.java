@@ -1,5 +1,8 @@
 package ocr.system;
 
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -203,11 +206,33 @@ public class ImageProcessingLibraryTest
    public void testExtractCharacters()
    {
       System.out.println("extractCharacters");
-      Image pImage = null;
-      Collection expResult = null;
-      Collection result = ImageProcessingLibrary.extractCharacters(pImage);
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      Image pImage = new ImageRetriever(img).readImage();
+      pImage = ImageProcessingLibrary.threshold(pImage);
+      pImage = ImageProcessingLibrary.correctSkew(pImage);
+      pImage = ImageProcessingLibrary.trim(pImage);
+
+      ArrayList<Image> expResult = new ArrayList<Image>();
+      img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
+           + "Doman Domain\\Classes\\Senior Project\\Test\\extract.jpg");
+      Image normal = new ImageRetriever(img).readImage();
+      normal = ImageProcessingLibrary.threshold(normal);
+      expResult.add(normal);
+      Collection extract = ImageProcessingLibrary.extractCharacters(pImage);
+      ArrayList<Image> result = (ArrayList<Image>) extract;
+
+      int i = 0;
+      for (Image exp : expResult)
+      {
+         Image res = null;
+         if (i < result.size())
+         {
+            res = result.get(i);  
+         }
+         
+         ImageAssert.isEqual(exp, res);
+         i++;
+      }
    }
 }
