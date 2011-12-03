@@ -1,5 +1,6 @@
 package ocr.system;
 
+import java.awt.image.BufferedImage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,13 +47,14 @@ public class ValueComparatorTest
    public void testCompare()
    {
       System.out.println("compare");
-      Object o1 = null;
-      Object o2 = null;
+      BoundingBox box = new BoundingBox();
+      BufferedImage temp = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+      temp.setRGB(0, 0, ImageProcessingLibrary.ONBLACK);
+      Object o1 = new IntegerCharacterPair(3, temp, box);
+      Object o2 = new IntegerCharacterPair(3, temp, box);
       ValueComparator instance = new ValueComparator();
       int expResult = 0;
       int result = instance.compare(o1, o2);
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
