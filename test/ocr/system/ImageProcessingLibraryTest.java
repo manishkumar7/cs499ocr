@@ -145,12 +145,40 @@ public class ImageProcessingLibraryTest
    public void testTrim()
    {
       System.out.println("trim");
-      Image pImage = null;
-      Image expResult = null;
+      BufferedImage pImage = new BufferedImage(19, 50, BufferedImage.TYPE_INT_RGB);
+      for (int row = 0; row < 50; row++)
+      {
+         for (int col = 0; col < 19; col++)
+         {
+            if ((row == 5) && (col > 4) && (col <= 14))
+            {
+               pImage.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+            }
+            else
+            {
+               pImage.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+            }
+         }
+      }
+
+      BufferedImage expResult = new BufferedImage(19, 10, BufferedImage.TYPE_INT_RGB);
+      for (int row = 0; row < 10; row++)
+      {
+         for (int col = 0; col < 19; col++)
+         {
+            if ((row == 5) && (col > 4) && (col <= 14))
+            {
+               expResult.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+            }
+            else
+            {
+               expResult.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+            }
+         }
+      }
+      
       Image result = ImageProcessingLibrary.trim(pImage);
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      ImageAssert.isEqual(expResult, result);
    }
 
    /**
