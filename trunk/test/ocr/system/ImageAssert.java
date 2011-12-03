@@ -51,6 +51,10 @@ public class ImageAssert
                      if ((leftColor == ImageProcessingLibrary.ONBLACK)
                         || (rightColor == ImageProcessingLibrary.ONBLACK))
                      {
+                        if (leftColor == ImageProcessingLibrary.ONBLACK)
+                        {
+                           System.out.println("black: " + ImageProcessingLibrary.ONBLACK);
+                        }
                         Assert.failNotEquals(
                            "At row: " + row + " col: " + col
                            + " expected image does not match pixel color of result."
@@ -66,7 +70,9 @@ public class ImageAssert
          }
          else
          {
-            Assert.failNotEquals("Images not same size.", expResult, result);
+            Assert.failNotEquals("Images not same size. Expected width: "
+               + leftWidth + " Expected height: "
+               + leftHeight, expResult, result);
             isEqual = false;
          }
       }
