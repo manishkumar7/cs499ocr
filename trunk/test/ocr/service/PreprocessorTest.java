@@ -1,5 +1,7 @@
 package ocr.service;
 
+import ocr.system.ImageAssert;
+import java.util.ArrayList;
 import ocr.system.ImageProcessingLibrary;
 import ocr.system.ImageRetriever;
 import java.io.File;
@@ -58,10 +60,21 @@ public class PreprocessorTest
       document = ImageProcessingLibrary.correctSkew(document);
       document = ImageProcessingLibrary.trim(document);
       
-      Collection expResult = ImageProcessingLibrary.extractCharacters(document);
-      expResult.add(document);
-      Collection result = Preprocessor.preprocess(pImage);
+      ArrayList<Image> expResult;
+      expResult = (ArrayList<Image>) ImageProcessingLibrary.extractCharacters(document);
+      ArrayList<Image> result;
+      result = (ArrayList<Image>) Preprocessor.preprocess(pImage);
 
-      assertEquals(expResult, result);
+      int i = 0;
+      for (Image exp : expResult)
+      {
+         Image res = null;
+         if (i < result.size())
+         {
+            res = result.get(i);
+         }
+         ImageAssert.isEqual(exp, res);
+         i++;
+      }
    }
 }

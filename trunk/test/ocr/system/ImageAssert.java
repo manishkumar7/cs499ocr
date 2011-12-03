@@ -24,42 +24,49 @@ public class ImageAssert
    {
       //Assume they are equal
       boolean isEqual = true;
-      BufferedImage left = (BufferedImage) expResult;
-      BufferedImage right = (BufferedImage) result;
 
-      int leftWidth = left.getWidth();
-      int leftHeight = left.getHeight();
-
-      int rightWidth = right.getWidth();
-      int rightHeight = right.getHeight();
-
-      if ((leftWidth == rightWidth) && (leftHeight == rightHeight))
+      if ((expResult != null) && (result != null))
       {
-         for (int row = 0; row < leftHeight; row++)
+         BufferedImage left = (BufferedImage) expResult;
+         BufferedImage right = (BufferedImage) result;
+
+         int leftWidth = left.getWidth();
+         int leftHeight = left.getHeight();
+
+         int rightWidth = right.getWidth();
+         int rightHeight = right.getHeight();
+
+         if ((leftWidth == rightWidth) && (leftHeight == rightHeight))
          {
-            for (int col = 0; col < leftWidth; col++)
+            for (int row = 0; row < leftHeight; row++)
             {
-               int leftColor = left.getRGB(col, row);
-               int rightColor = right.getRGB(col, row);
-
-               //If any of the pixels are not the same
-               if (leftColor != rightColor)
+               for (int col = 0; col < leftWidth; col++)
                {
-                  isEqual = false;
-                  break;
-               }
+                  int leftColor = left.getRGB(col, row);
+                  int rightColor = right.getRGB(col, row);
 
+                  //If any of the pixels are not the same
+                  if (leftColor != rightColor)
+                  {
+                     Assert.failNotEquals(
+                        "Images do not have same colors for each pixel.",
+                        expResult, result);
+                     isEqual = false;
+                     break;
+                  }
+               }
             }
+         }
+         else
+         {
+            Assert.failNotEquals("Images not same size.", expResult, result);
+            isEqual = false;
          }
       }
       else
       {
+         Assert.failNotEquals("Null image.", expResult, result);
          isEqual = false;
-      }
-
-      if (!isEqual)
-      {
-         Assert.failNotEquals("Images not equal.", expResult, result);
       }
 
       return isEqual;
