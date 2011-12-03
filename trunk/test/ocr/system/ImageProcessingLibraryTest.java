@@ -65,12 +65,45 @@ public class ImageProcessingLibraryTest
    public void testCorrectSkew()
    {
       System.out.println("correctSkew");
-      Image pImage = null;
-      Image expResult = null;
-      Image result = ImageProcessingLibrary.correctSkew(pImage);
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+
+      int height = 3;
+      int width = 10;
+      BufferedImage pImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            if (row == 1)
+            {
+               pImage.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+            }
+            else
+            {
+               pImage.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+            }
+         }
+      }
+
+      BufferedImage expResult = new BufferedImage(19, 10, BufferedImage.TYPE_INT_RGB);
+      for (int row = 0; row < 10; row++)
+      {
+         for (int col = 0; col < 19; col++)
+         {
+            if ((row == 5) && (col > 4) && (col <= 14))
+            {
+               expResult.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+            }
+            else
+            {
+               expResult.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+            }
+         }
+      }
+      BufferedImage result = (BufferedImage) ImageProcessingLibrary.correctSkew(pImage);
+      result = (BufferedImage) ImageProcessingLibrary.trim(result);
+      
+      ImageAssert.isEqual(expResult, result);
    }
 
    /**

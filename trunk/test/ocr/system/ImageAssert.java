@@ -13,8 +13,8 @@ public class ImageAssert
 {
    /**
     * Returns true if the the images provided are equal. They are considered
-    * equal if the pixels at each coordinate have the same value and they
-    * have the same size.
+    * equal if the pixels at each coordinate have the same foreground and they
+    * have the same size. Background pixels may have differing values.
     * 
     * @param expResult The image that we expect to find
     * @param result The image to compare to the expected image
@@ -48,11 +48,18 @@ public class ImageAssert
                   //If any of the pixels are not the same
                   if (leftColor != rightColor)
                   {
-                     Assert.failNotEquals(
-                        "Images do not have same colors for each pixel.",
-                        expResult, result);
-                     isEqual = false;
-                     break;
+                     if ((leftColor == ImageProcessingLibrary.ONBLACK)
+                        || (rightColor == ImageProcessingLibrary.ONBLACK))
+                     {
+                        Assert.failNotEquals(
+                           "At row: " + row + " col: " + col
+                           + " expected image does not match pixel color of result."
+                           + "expected color: " + leftColor
+                           + " result color: " + rightColor,
+                           expResult, result);
+                        isEqual = false;
+                        break;
+                     }
                   }
                }
             }

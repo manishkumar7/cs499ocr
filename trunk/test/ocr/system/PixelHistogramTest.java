@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class PixelHistogramTest
 {
-   Image tImage;
+   private Image tImage;
    
    public PixelHistogramTest()
    {
