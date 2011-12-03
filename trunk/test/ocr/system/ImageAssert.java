@@ -2,6 +2,7 @@ package ocr.system;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import junit.framework.Assert;
 
 /**
  * Used to compare Image objects in test cases.
@@ -15,16 +16,16 @@ public class ImageAssert
     * equal if the pixels at each coordinate have the same value and they
     * have the same size.
     * 
-    * @param pLeft The image in the left parameter to compare
-    * @param pRight The image in the right parameter to compare
+    * @param expResult The image that we expect to find
+    * @param result The image to compare to the expected image
     * @return True if the images are equal
     */
-   public static boolean isEqual(Image pLeft, Image pRight)
+   public static boolean isEqual(Image expResult, Image result)
    {
       //Assume they are equal
       boolean isEqual = true;
-      BufferedImage left = (BufferedImage) pLeft;
-      BufferedImage right = (BufferedImage) pRight;
+      BufferedImage left = (BufferedImage) expResult;
+      BufferedImage right = (BufferedImage) result;
 
       int leftWidth = left.getWidth();
       int leftHeight = left.getHeight();
@@ -54,6 +55,11 @@ public class ImageAssert
       else
       {
          isEqual = false;
+      }
+
+      if (!isEqual)
+      {
+         Assert.failNotEquals("Images not equal.", expResult, result);
       }
 
       return isEqual;

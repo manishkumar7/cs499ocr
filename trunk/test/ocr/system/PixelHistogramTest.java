@@ -1,5 +1,8 @@
 package ocr.system;
 
+import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,8 +17,39 @@ import static org.junit.Assert.*;
  */
 public class PixelHistogramTest
 {
+   Image tImage;
+   
    public PixelHistogramTest()
    {
+      int height = 3;
+      int width = 3;
+      tImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      BufferedImage temp = (BufferedImage) tImage;
+
+      //
+      // Create the following pattern
+      // 1 0 1
+      // 0 1 0
+      // 0 0 1
+      //
+
+      int i = 0;
+      for (int row = 0; row < height; row++)
+      {
+         for (int col = 0; col < width; col++)
+         {
+            if ((i % 4) == 0)
+            {
+               temp.setRGB(col, row, ImageProcessingLibrary.ONBLACK);  
+            }
+            else
+            {
+               temp.setRGB(col, row, ImageProcessingLibrary.OFFWHITE); 
+            }
+            i++;
+         }  
+      }
+      temp.setRGB(2, 0, ImageProcessingLibrary.ONBLACK);
    }
 
    @BeforeClass
@@ -47,12 +81,10 @@ public class PixelHistogramTest
    public void testGetArea()
    {
       System.out.println("getArea");
-      PixelHistogram instance = null;
-      Double expResult = null;
+      PixelHistogram instance = new PixelHistogram(tImage);
+      Double expResult = 4.0;
       Double result = instance.getArea();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -62,12 +94,13 @@ public class PixelHistogramTest
    public void testGetColumnHistogram()
    {
       System.out.println("getColumnHistogram");
-      PixelHistogram instance = null;
-      Collection expResult = null;
+      PixelHistogram instance = new PixelHistogram(tImage);
+      ArrayList<Double> expResult = new ArrayList<Double>();
+      expResult.add(1.0);
+      expResult.add(1.0);
+      expResult.add(2.0);
       Collection result = instance.getColumnHistogram();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 
    /**
@@ -77,11 +110,12 @@ public class PixelHistogramTest
    public void testGetRowHistogram()
    {
       System.out.println("getRowHistogram");
-      PixelHistogram instance = null;
-      Collection expResult = null;
+      PixelHistogram instance = new PixelHistogram(tImage);
+      ArrayList<Double> expResult = new ArrayList<Double>();
+      expResult.add(2.0);
+      expResult.add(1.0);
+      expResult.add(1.0);
       Collection result = instance.getRowHistogram();
       assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
    }
 }
