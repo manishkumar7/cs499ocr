@@ -1,5 +1,7 @@
 package ocr.service;
 
+import ocr.desktop.DesktopPrompter;
+import ocr.OcrSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,6 +17,7 @@ public class TrainerTest
 {
    public TrainerTest()
    {
+      OcrSuite.backupTraining();
    }
 
    @BeforeClass
@@ -37,6 +40,7 @@ public class TrainerTest
    @After
    public void tearDown()
    {
+      OcrSuite.restoreTraining();
    }
 
    /**
@@ -46,9 +50,15 @@ public class TrainerTest
    public void testTrain()
    {
       System.out.println("train");
-      Trainer instance = null;
-      String expResult = "";
+      TrainingDataProxy proxy = new TrainingDataProxy();
+      int size = proxy.getTrainingData().size();
+      Trainer instance = new Trainer(new DesktopPrompter(), OcrSuite.cTextImage);
+      String expResult = "abcdefghijklmnopqrstuvwxyz";
       String result = instance.train();
       assertEquals(expResult, result);
+
+      Integer expSize = size + 26;
+      Integer resultSize = proxy.getTrainingData().size();
+      assertEquals(expSize, resultSize);
    }
 }
