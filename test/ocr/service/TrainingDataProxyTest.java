@@ -1,8 +1,9 @@
 package ocr.service;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import ocr.system.TrainingData;
 import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
@@ -46,17 +47,32 @@ public class TrainingDataProxyTest
    }
 
    /**
+    * Test of getTrainingData method, of class TrainingDataProxy.
+    */
+   @Test
+   public void testGetTrainingData()
+   {
+      System.out.println("getTrainingData");
+      TrainingDataProxy instance = new TrainingDataProxy();
+      Collection expResult = null;
+      Collection result = instance.getTrainingData();
+      assertFalse(result.isEmpty());
+   }
+
+   /**
     * Test of insertTrainingData method, of class TrainingDataProxy.
     */
    @Test
    public void testInsertTrainingData()
    {
       System.out.println("insertTrainingData");
-      CharacterFeaturePair pData = null;
-      TrainingDataProxy instance = new TrainingDataProxy();
-      //instance.insertTrainingData(pData);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      CharacterFeaturePair pData = new CharacterFeaturePair("test", null);
+      TrainingDataProxy instance = new MockTrainingDataProxy();
+      instance.insertTrainingData(pData);
+
+      ArrayList<CharacterFeaturePair> data;
+      data = (ArrayList<CharacterFeaturePair>) instance.getTrainingData();
+      assertTrue(data.contains(pData));
    }
 
    /**
@@ -68,6 +84,7 @@ public class TrainingDataProxyTest
       System.out.println("saveTraingData");
       File file = new File(TrainingData.cFileName);
       TrainingDataProxy instance = new TrainingDataProxy();
+      instance.deleteTrainingData();
       instance.saveTraingData();
 
       boolean result = file.exists();
@@ -85,25 +102,62 @@ public class TrainingDataProxyTest
       File file = new File(TrainingData.cFileName);
 
       TrainingDataProxy instance = new TrainingDataProxy();
-//      instance.deleteTrainingData();
+      instance.deleteTrainingData();
 
       boolean result = file.exists();
       boolean expResult = false;
       assertEquals(expResult, result);
+      instance.saveTraingData();
    }
+}
+
+class MockTrainingDataProxy
+   extends TrainingDataProxy
+
+{
+   /**
+    * The handle on the training data
+    */
+   private TrainingData mMockTrainingBase;
 
    /**
-    * Test of getTrainingData method, of class TrainingDataProxy.
+    * Stores the training data
     */
-   @Test
-   public void testGetTrainingData()
+   private Collection<CharacterFeaturePair> mMockData;
+
+   public MockTrainingDataProxy()
    {
-      System.out.println("getTrainingData");
-      TrainingDataProxy instance = new TrainingDataProxy();
-      Collection expResult = null;
-      Collection result = instance.getTrainingData();
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      try
+      {
+         File file = new File(TrainingData.cFileName);
+         if (file.exists())
+         {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            mMockTrainingBase = (TrainingData) ois.readObject();
+            ois.close();
+         }
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
+      mMockData = new ArrayList<CharacterFeaturePair>();
+      for (CharacterFeaturePair pair : mMockTrainingBase.getData())
+      {
+         mMockData.add(pair);
+      }
+   }
+
+   @Override
+   public void insertTrainingData(CharacterFeaturePair pData)
+   {
+      mMockData.add(pData);
+   }
+
+   @Override
+   public Collection<CharacterFeaturePair> getTrainingData()
+   {
+      return mMockData;
    }
 }
