@@ -1,7 +1,9 @@
 package ocr.service;
 
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.io.File;
 import ocr.system.TrainingData;
@@ -20,8 +22,32 @@ import static org.junit.Assert.*;
  */
 public class TrainingDataProxyTest
 {
+   private static final String cBackupFile = "train.bk";
    public TrainingDataProxyTest()
    {
+      File file = new File(TrainingData.cFileName);
+      File bck = new File(cBackupFile);
+      if (file.exists())
+      {
+         try
+         {
+            InputStream in = new FileInputStream(file);
+            OutputStream out = new FileOutputStream(bck);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+            {
+               out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
    }
 
    @BeforeClass
@@ -44,6 +70,29 @@ public class TrainingDataProxyTest
    @After
    public void tearDown()
    {
+      File file = new File(TrainingData.cFileName);
+      File bck = new File(cBackupFile);
+      if (bck.exists())
+      {
+         try
+         {
+            InputStream in = new FileInputStream(bck);
+            OutputStream out = new FileOutputStream(file);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+            {
+               out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
    }
 
    /**
@@ -67,7 +116,7 @@ public class TrainingDataProxyTest
    {
       System.out.println("insertTrainingData");
       CharacterFeaturePair pData = new CharacterFeaturePair("test", null);
-      TrainingDataProxy instance = new MockTrainingDataProxy();
+      TrainingDataProxy instance = new TrainingDataProxy();
       instance.insertTrainingData(pData);
 
       ArrayList<CharacterFeaturePair> data;
@@ -108,56 +157,5 @@ public class TrainingDataProxyTest
       boolean expResult = false;
       assertEquals(expResult, result);
       instance.saveTraingData();
-   }
-}
-
-class MockTrainingDataProxy
-   extends TrainingDataProxy
-
-{
-   /**
-    * The handle on the training data
-    */
-   private TrainingData mMockTrainingBase;
-
-   /**
-    * Stores the training data
-    */
-   private Collection<CharacterFeaturePair> mMockData;
-
-   public MockTrainingDataProxy()
-   {
-      try
-      {
-         File file = new File(TrainingData.cFileName);
-         if (file.exists())
-         {
-            FileInputStream fis = new FileInputStream(file);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            mMockTrainingBase = (TrainingData) ois.readObject();
-            ois.close();
-         }
-      }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-      }
-      mMockData = new ArrayList<CharacterFeaturePair>();
-      for (CharacterFeaturePair pair : mMockTrainingBase.getData())
-      {
-         mMockData.add(pair);
-      }
-   }
-
-   @Override
-   public void insertTrainingData(CharacterFeaturePair pData)
-   {
-      mMockData.add(pData);
-   }
-
-   @Override
-   public Collection<CharacterFeaturePair> getTrainingData()
-   {
-      return mMockData;
    }
 }
