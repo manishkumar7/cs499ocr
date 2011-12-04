@@ -123,7 +123,7 @@ public class TrainingDataTest
       System.out.println("insert");
       CharacterFeaturePair pData = null;
       TrainingData instance = null;
-      instance.insert(pData);
+      //instance.insert(pData);
       // TODO review the generated test code and remove the default call to fail.
       fail("The test case is a prototype.");
    }
