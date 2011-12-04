@@ -319,7 +319,7 @@ public class ImageProcessingLibrary
     * @param pImage The binary image to process.
     * @return The processed image with connected components labeled.
     */
-   public static int[][] labelConnectedComponents(Image pImage)
+   private static int[][] labelConnectedComponents(Image pImage)
    {
       BufferedImage image = (BufferedImage) pImage;
       int width = image.getWidth();
