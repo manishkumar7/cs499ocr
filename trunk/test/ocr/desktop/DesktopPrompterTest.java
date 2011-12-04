@@ -1,7 +1,6 @@
 package ocr.desktop;
 
-import ocr.system.ImageRetriever;
-import java.io.File;
+import ocr.OcrSuite;
 import java.awt.Image;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,9 +48,7 @@ public class DesktopPrompterTest
    public void testPromptUser()
    {
       System.out.println("promptUser");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cCharImage;
       DesktopPrompter instance = new DesktopPrompter();
       String expResult = "a";
       String result = instance.promptUser(pImage);

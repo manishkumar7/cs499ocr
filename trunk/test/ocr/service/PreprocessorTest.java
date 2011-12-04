@@ -3,16 +3,14 @@ package ocr.service;
 import ocr.system.ImageAssert;
 import java.util.ArrayList;
 import ocr.system.ImageProcessingLibrary;
-import ocr.system.ImageRetriever;
 import java.io.File;
 import java.awt.Image;
-import java.util.Collection;
+import ocr.OcrSuite;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -53,9 +51,7 @@ public class PreprocessorTest
    public void testPreprocess()
    {
       System.out.println("preprocess");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cCharImage;
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
       document = ImageProcessingLibrary.trim(document);

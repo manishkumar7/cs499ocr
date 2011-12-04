@@ -1,5 +1,8 @@
 package ocr;
 
+import java.awt.Image;
+import java.io.File;
+import ocr.system.ImageRetriever;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +21,22 @@ import org.junit.runners.Suite;
 })
 public class OcrSuite
 {
+   public static Image cCharImage;
+   public static Image cTextImage;
+   public static Image cExtractImage;
+
+   static
+   {
+      File imgFile = new File(".\\test\\res\\char.jpg");
+      cCharImage = new ImageRetriever(imgFile).readImage();
+
+      imgFile = new File(".\\test\\res\\text.jpg");
+      cTextImage = new ImageRetriever(imgFile).readImage();
+
+      imgFile = new File(".\\test\\res\\extract.jpg");
+      cExtractImage = new ImageRetriever(imgFile).readImage();
+   }
+
    @BeforeClass
    public static void setUpClass()
       throws Exception

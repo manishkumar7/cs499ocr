@@ -1,5 +1,6 @@
 package ocr.system;
 
+import ocr.OcrSuite;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -50,9 +51,7 @@ public class CharacterPrompterTest
    public void testPromptUser()
    {
       System.out.println("promptUser");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cCharImage;
       CharacterPrompter instance = new CharacterPrompterImpl();
       String expResult = "a";
       String result = instance.promptUser(pImage);

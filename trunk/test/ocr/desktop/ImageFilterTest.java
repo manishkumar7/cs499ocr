@@ -47,21 +47,18 @@ public class ImageFilterTest
    public void testAccept()
    {
       System.out.println("accept");
-      File f = new File("C:\\Users\\Public\\Pictures\\Sample Pictures\\"
-         + "desert.jpg");
+      File f = new File(".\\test\\res\\char.jpg");
       ImageFilter instance = new ImageFilter();
       boolean expResult = true;
       boolean result = instance.accept(f);
       assertEquals(expResult, result);
 
-      f = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\Doman Domain\\"
-         + "Classes\\Senior Project\\Design\\systemUML.png");
+      f = new File(".\\design\\systemUML.png");
       expResult = true;
       result = instance.accept(f);
       assertEquals(expResult, result);
 
-      f = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\Doman Domain\\"
-         + "Classes\\Senior Project\\Design\\systemUML.uxf");
+      f = new File(".\\design\\systemUML.uxf");
       expResult = false;
       result = instance.accept(f);
       assertEquals(expResult, result);
