@@ -185,21 +185,6 @@ public class ImageProcessingLibraryTest
    }
 
    /**
-    * Test of labelConnectedComponents method, of class ImageProcessingLibrary.
-    */
-   @Test
-   public void testLabelConnectedComponents()
-   {
-      System.out.println("labelConnectedComponents");
-      Image pImage = null;
-      int[][] expResult = null;
-      int[][] result = ImageProcessingLibrary.labelConnectedComponents(pImage);
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
-   }
-
-   /**
     * Test of extractCharacters method, of class ImageProcessingLibrary.
     */
    @Test
