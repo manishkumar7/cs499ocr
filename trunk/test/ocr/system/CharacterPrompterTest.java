@@ -1,7 +1,6 @@
 package ocr.system;
 
 import ocr.OcrSuite;
-import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Image;
