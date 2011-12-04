@@ -20,32 +20,36 @@ public class OpticalCharacterRecognizer
     */
    public static String extractString(Image pImage)
    {
-      Collection<Image> characters = Preprocessor.preprocess(pImage);
-      String text = "";
+      String text = "Error: Image rejected";
 
-      //TODO: Create a thread pool of size 4
-      for (Image character : characters)
+      if (pImage != null)
       {
-         if (character == ImageProcessingLibrary.NEWLINE_MARK)
-         {
-            text += "\n";
-         }
-         else if (character == ImageProcessingLibrary.SPACE_MARK)
-         {
-            text += " ";
-         }
-         else
-         {
-            FeatureExtractor extractor = new FeatureExtractor(character);
-            extractor.run();
+         Collection<Image> characters = Preprocessor.preprocess(pImage);
+         text = "";
 
-            PatternRecognizer recognizer = new PatternRecognizer(extractor.
-               getFeaturePoint());
-            recognizer.run();
-            text += recognizer.getCharacter();
+         //TODO: Create a thread pool of size 4
+         for (Image character : characters)
+         {
+            if (character == ImageProcessingLibrary.NEWLINE_MARK)
+            {
+               text += "\n";
+            }
+            else if (character == ImageProcessingLibrary.SPACE_MARK)
+            {
+               text += " ";
+            }
+            else
+            {
+               FeatureExtractor extractor = new FeatureExtractor(character);
+               extractor.run();
+
+               PatternRecognizer recognizer = new PatternRecognizer(extractor.
+                  getFeaturePoint());
+               recognizer.run();
+               text += recognizer.getCharacter();
+            }
          }
       }
-      
       return text;
    }
 }
