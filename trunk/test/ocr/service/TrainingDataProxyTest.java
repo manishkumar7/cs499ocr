@@ -103,7 +103,6 @@ public class TrainingDataProxyTest
    {
       System.out.println("getTrainingData");
       TrainingDataProxy instance = new TrainingDataProxy();
-      Collection expResult = null;
       Collection result = instance.getTrainingData();
       assertFalse(result.isEmpty());
    }
