@@ -1,9 +1,9 @@
 package ocr.desktop;
 
+import ocr.OcrSuite;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.JOptionPane;
-import ocr.system.ImageRetriever;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,9 +50,7 @@ public class ImageDisplayerTest
    public void testDisplayImage()
    {
       System.out.println("displayImage");
-      File img = new File("C:\\Users\\Public\\Pictures\\Sample Pictures\\"
-         + "desert.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cTextImage;
       int expResult = JOptionPane.YES_OPTION;
       ImageDisplayer.displayImage(pImage);
       int result = JOptionPane.showConfirmDialog(
