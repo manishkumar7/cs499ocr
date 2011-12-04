@@ -1,5 +1,8 @@
 package ocr.system;
 
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import junit.framework.Assert;
 import java.io.File;
@@ -19,8 +22,32 @@ import static org.junit.Assert.*;
  */
 public class TrainingDataTest
 {
+   private static final String cBackupFile = "train.bk";
    public TrainingDataTest()
    {
+      File file = new File(TrainingData.cFileName);
+      File bck = new File(cBackupFile);
+      if (file.exists())
+      {
+         try
+         {
+            InputStream in = new FileInputStream(file);
+            OutputStream out = new FileOutputStream(bck);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+            {
+               out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
    }
 
    @BeforeClass
@@ -43,6 +70,29 @@ public class TrainingDataTest
    @After
    public void tearDown()
    {
+      File file = new File(TrainingData.cFileName);
+      File bck = new File(cBackupFile);
+      if (bck.exists())
+      {
+         try
+         {
+            InputStream in = new FileInputStream(bck);
+            OutputStream out = new FileOutputStream(file);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+            {
+               out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
    }
 
    /**
@@ -121,11 +171,13 @@ public class TrainingDataTest
    public void testInsert()
    {
       System.out.println("insert");
-      CharacterFeaturePair pData = null;
-      TrainingData instance = null;
-      //instance.insert(pData);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      CharacterFeaturePair pData = new CharacterFeaturePair("test", null);
+      TrainingData instance = TrainingData.getInstance();
+      instance.insert(pData);
+
+      ArrayList<CharacterFeaturePair> data;
+      data = (ArrayList<CharacterFeaturePair>) instance.getData();
+      assertTrue(data.contains(pData));
    }
 
    /**
@@ -136,10 +188,7 @@ public class TrainingDataTest
    {
       System.out.println("getData");
       TrainingData instance = TrainingData.getInstance();
-      Collection expResult = null;
       Collection result = instance.getData();
-      assertEquals(expResult, result);
-      // TODO review the generated test code and remove the default call to fail.
-      fail("The test case is a prototype.");
+      assertFalse(result.isEmpty());
    }
 }
