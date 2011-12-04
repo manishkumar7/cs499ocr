@@ -30,8 +30,7 @@ public class DesktopOCR extends javax.swing.JFrame
     public DesktopOCR()
     {
         initComponents();
-        mStart = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Images");
+        mStart = new File(".\\src\\res");
     }
 
     /** This method is called from within the constructor to

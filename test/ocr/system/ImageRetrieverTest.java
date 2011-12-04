@@ -48,8 +48,7 @@ public class ImageRetrieverTest
    public void testReadImage()
    {
       System.out.println("readImage");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
+      File img = new File(".\\test\\res\\char.jpg");
       ImageRetriever instance = new ImageRetriever(img);
       Image expResult = null;
       try

@@ -1,6 +1,6 @@
 package ocr.service;
 
-import ocr.system.ImageRetriever;
+import ocr.OcrSuite;
 import java.io.File;
 import java.awt.Image;
 import org.junit.After;
@@ -49,9 +49,7 @@ public class OpticalCharacterRecognizerTest
    public void testExtractString()
    {
       System.out.println("extractString");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\test.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cTextImage;
       String expResult = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
       String result = OpticalCharacterRecognizer.extractString(pImage);
       assertEquals(expResult, result);

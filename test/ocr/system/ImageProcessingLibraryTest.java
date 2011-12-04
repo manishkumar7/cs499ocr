@@ -1,7 +1,6 @@
 package ocr.system;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import ocr.OcrSuite;
 import java.io.File;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -191,17 +190,13 @@ public class ImageProcessingLibraryTest
    public void testExtractCharacters()
    {
       System.out.println("extractCharacters");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cCharImage;
       pImage = ImageProcessingLibrary.threshold(pImage);
       pImage = ImageProcessingLibrary.correctSkew(pImage);
       pImage = ImageProcessingLibrary.trim(pImage);
 
       ArrayList<Image> expResult = new ArrayList<Image>();
-      img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\extract.jpg");
-      Image normal = new ImageRetriever(img).readImage();
+      Image normal = OcrSuite.cExtractImage;
       normal = ImageProcessingLibrary.threshold(normal);
       expResult.add(normal);
       Collection extract = ImageProcessingLibrary.extractCharacters(pImage);

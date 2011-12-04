@@ -1,5 +1,6 @@
 package ocr.service;
 
+import ocr.OcrSuite;
 import java.util.ArrayList;
 import ocr.system.PixelHistogram;
 import java.awt.Image;
@@ -52,10 +53,8 @@ public class FeatureExtractorTest
    public void testGetFeaturePoint()
    {
       System.out.println("getFeaturePoint");
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-           + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
 
+      Image pImage = OcrSuite.cCharImage;
       FeatureExtractor instance = new FeatureExtractor(pImage);
       instance.run();
       PixelHistogram hist = new PixelHistogram(pImage);
@@ -82,9 +81,7 @@ public class FeatureExtractorTest
    {
       System.out.println("run");
 
-      File img = new File("C:\\Users\\Sir Devin\\Documents\\My Dropbox\\"
-         + "Doman Domain\\Classes\\Senior Project\\Test\\char.jpg");
-      Image pImage = new ImageRetriever(img).readImage();
+      Image pImage = OcrSuite.cCharImage;
       FeatureExtractor instance = new FeatureExtractor(pImage);
       instance.run();
 
