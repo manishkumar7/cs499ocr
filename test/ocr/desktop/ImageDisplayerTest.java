@@ -2,7 +2,6 @@ package ocr.desktop;
 
 import ocr.OcrSuite;
 import java.awt.Image;
-import java.io.File;
 import javax.swing.JOptionPane;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -3,7 +3,6 @@ package ocr.service;
 import ocr.system.ImageAssert;
 import java.util.ArrayList;
 import ocr.system.ImageProcessingLibrary;
-import java.io.File;
 import java.awt.Image;
 import ocr.OcrSuite;
 import org.junit.After;

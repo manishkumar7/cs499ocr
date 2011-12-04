@@ -1,8 +1,6 @@
 package ocr.system;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import ocr.OcrSuite;
 import java.util.ArrayList;
 import junit.framework.Assert;
 import java.io.File;
@@ -22,32 +20,9 @@ import static org.junit.Assert.*;
  */
 public class TrainingDataTest
 {
-   private static final String cBackupFile = "train.bk";
    public TrainingDataTest()
    {
-      File file = new File(TrainingData.cFileName);
-      File bck = new File(cBackupFile);
-      if (file.exists())
-      {
-         try
-         {
-            InputStream in = new FileInputStream(file);
-            OutputStream out = new FileOutputStream(bck);
-
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0)
-            {
-               out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-         }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-         }
-      }
+      OcrSuite.backupTraining();
    }
 
    @BeforeClass
@@ -70,29 +45,7 @@ public class TrainingDataTest
    @After
    public void tearDown()
    {
-      File file = new File(TrainingData.cFileName);
-      File bck = new File(cBackupFile);
-      if (bck.exists())
-      {
-         try
-         {
-            InputStream in = new FileInputStream(bck);
-            OutputStream out = new FileOutputStream(file);
-
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0)
-            {
-               out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-         }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-         }
-      }
+      OcrSuite.restoreTraining();
    }
 
    /**

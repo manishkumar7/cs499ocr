@@ -1,7 +1,6 @@
 package ocr.system;
 
 import ocr.OcrSuite;
-import java.io.File;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.Image;

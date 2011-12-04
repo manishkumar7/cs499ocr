@@ -4,8 +4,6 @@ import ocr.OcrSuite;
 import java.util.ArrayList;
 import ocr.system.PixelHistogram;
 import java.awt.Image;
-import java.io.File;
-import ocr.system.ImageRetriever;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;

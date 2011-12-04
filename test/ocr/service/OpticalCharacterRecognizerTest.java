@@ -1,7 +1,6 @@
 package ocr.service;
 
 import ocr.OcrSuite;
-import java.io.File;
 import java.awt.Image;
 import org.junit.After;
 import org.junit.AfterClass;
