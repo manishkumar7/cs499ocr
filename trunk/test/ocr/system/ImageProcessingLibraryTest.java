@@ -66,45 +66,53 @@ public class ImageProcessingLibraryTest
    public void testCorrectSkew()
    {
       System.out.println("correctSkew");
-
-      int height = 3;
-      int width = 10;
-      BufferedImage pImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-      for (int row = 0; row < height; row++)
+      try
       {
-         for (int col = 0; col < width; col++)
+         int height = 3;
+         int width = 10;
+         BufferedImage pImage = new BufferedImage(width, height,
+            BufferedImage.TYPE_INT_RGB);
+
+         for (int row = 0; row < height; row++)
          {
-            if (row == 1)
+            for (int col = 0; col < width; col++)
             {
-               pImage.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
-            }
-            else
-            {
-               pImage.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+               if (row == 1)
+               {
+                  pImage.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+               }
+               else
+               {
+                  pImage.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+               }
             }
          }
-      }
 
-      BufferedImage expResult = new BufferedImage(19, 10, BufferedImage.TYPE_INT_RGB);
-      for (int row = 0; row < 10; row++)
-      {
-         for (int col = 0; col < 19; col++)
+         BufferedImage expResult = new BufferedImage(19, 10,
+            BufferedImage.TYPE_INT_RGB);
+         for (int row = 0; row < 10; row++)
          {
-            if ((row == 5) && (col > 4) && (col <= 14))
+            for (int col = 0; col < 19; col++)
             {
-               expResult.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
-            }
-            else
-            {
-               expResult.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+               if ((row == 5) && (col > 4) && (col <= 14))
+               {
+                  expResult.setRGB(col, row, ImageProcessingLibrary.ONBLACK);
+               }
+               else
+               {
+                  expResult.setRGB(col, row, ImageProcessingLibrary.OFFWHITE);
+               }
             }
          }
+         BufferedImage result = (BufferedImage) ImageProcessingLibrary.
+            correctSkew(pImage);
+         result = (BufferedImage) ImageProcessingLibrary.trim(result);
+         ImageAssert.isEqual(expResult, result);
       }
-      BufferedImage result = (BufferedImage) ImageProcessingLibrary.correctSkew(pImage);
-      result = (BufferedImage) ImageProcessingLibrary.trim(result);
-      
-      ImageAssert.isEqual(expResult, result);
+      catch (Exception e)
+      {
+         e.printStackTrace();
+      }
    }
 
    /**
@@ -189,29 +197,36 @@ public class ImageProcessingLibraryTest
    public void testExtractCharacters()
    {
       System.out.println("extractCharacters");
-      Image pImage = OcrSuite.cCharImage;
-      pImage = ImageProcessingLibrary.threshold(pImage);
-      pImage = ImageProcessingLibrary.correctSkew(pImage);
-      pImage = ImageProcessingLibrary.trim(pImage);
-
-      ArrayList<Image> expResult = new ArrayList<Image>();
-      Image normal = OcrSuite.cExtractImage;
-      normal = ImageProcessingLibrary.threshold(normal);
-      expResult.add(normal);
-      Collection extract = ImageProcessingLibrary.extractCharacters(pImage);
-      ArrayList<Image> result = (ArrayList<Image>) extract;
-
-      int i = 0;
-      for (Image exp : expResult)
+      try
       {
-         Image res = null;
-         if (i < result.size())
+         Image pImage = OcrSuite.cCharImage;
+         pImage = ImageProcessingLibrary.threshold(pImage);
+         pImage = ImageProcessingLibrary.correctSkew(pImage);
+         pImage = ImageProcessingLibrary.trim(pImage);
+
+         ArrayList<Image> expResult = new ArrayList<Image>();
+         Image normal = OcrSuite.cExtractImage;
+         normal = ImageProcessingLibrary.threshold(normal);
+         expResult.add(normal);
+         Collection extract = ImageProcessingLibrary.extractCharacters(pImage);
+         ArrayList<Image> result = (ArrayList<Image>) extract;
+
+         int i = 0;
+         for (Image exp : expResult)
          {
-            res = result.get(i);  
+            Image res = null;
+            if (i < result.size())
+            {
+               res = result.get(i);
+            }
+
+            ImageAssert.isEqual(exp, res);
+            i++;
          }
-         
-         ImageAssert.isEqual(exp, res);
-         i++;
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
       }
    }
 }
