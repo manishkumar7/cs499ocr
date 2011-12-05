@@ -50,26 +50,34 @@ public class PreprocessorTest
    public void testPreprocess()
    {
       System.out.println("preprocess");
-      Image pImage = OcrSuite.cCharImage;
-      Image document = ImageProcessingLibrary.threshold(pImage);
-      document = ImageProcessingLibrary.correctSkew(document);
-      document = ImageProcessingLibrary.trim(document);
-      
-      ArrayList<Image> expResult;
-      expResult = (ArrayList<Image>) ImageProcessingLibrary.extractCharacters(document);
-      ArrayList<Image> result;
-      result = (ArrayList<Image>) Preprocessor.preprocess(pImage);
-
-      int i = 0;
-      for (Image exp : expResult)
+      try
       {
-         Image res = null;
-         if (i < result.size())
+         Image pImage = OcrSuite.cCharImage;
+         Image document = ImageProcessingLibrary.threshold(pImage);
+         document = ImageProcessingLibrary.correctSkew(document);
+         document = ImageProcessingLibrary.trim(document);
+
+         ArrayList<Image> expResult;
+         expResult = (ArrayList<Image>) ImageProcessingLibrary.extractCharacters(
+            document);
+         ArrayList<Image> result;
+         result = (ArrayList<Image>) Preprocessor.preprocess(pImage);
+
+         int i = 0;
+         for (Image exp : expResult)
          {
-            res = result.get(i);
+            Image res = null;
+            if (i < result.size())
+            {
+               res = result.get(i);
+            }
+            ImageAssert.isEqual(exp, res);
+            i++;
          }
-         ImageAssert.isEqual(exp, res);
-         i++;
+      }
+      catch (Exception e)
+      {
+         e.printStackTrace();
       }
    }
 }
