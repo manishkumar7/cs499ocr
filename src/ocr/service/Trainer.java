@@ -5,6 +5,7 @@ import java.util.Collection;
 import ocr.system.CharacterFeaturePair;
 import ocr.system.CharacterPrompter;
 import ocr.system.ImageProcessingLibrary;
+import ocr.system.InvalidImageException;
 
 /**
  * Allows a user to supply knowledge base of feature point-character pairs.
@@ -50,9 +51,10 @@ public class Trainer
     * @return The string of characters that have been entered by the user.
     */
    public String train()
+      throws InvalidImageException
    {
-      Collection<Image> characters = Preprocessor.preprocess(mTrainingImage);
       String text = "";
+      Collection<Image> characters = Preprocessor.preprocess(mTrainingImage);
 
       for (Image character : characters)
       {
