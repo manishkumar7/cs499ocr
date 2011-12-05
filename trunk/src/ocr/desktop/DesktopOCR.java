@@ -13,6 +13,7 @@ import javax.swing.filechooser.FileFilter;
 import ocr.service.OpticalCharacterRecognizer;
 import ocr.service.Trainer;
 import ocr.system.ImageRetriever;
+import ocr.system.InvalidImageException;
 
 /**
  * Run the OCR program for the desktop user.
@@ -109,18 +110,32 @@ public class DesktopOCR extends javax.swing.JFrame
     private void mOcrButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_mOcrButtonActionPerformed
     {//GEN-HEADEREND:event_mOcrButtonActionPerformed
        Image image = retrieveImage();
-       if (image != null)
+       try
        {
           mTextArea.setText(OpticalCharacterRecognizer.extractString(image));
+          jLabel1.setText("Extracted Text:");
+       }
+       catch (InvalidImageException e)
+       {
+          //Display image rejection message to the user
+          jLabel1.setText("Error:");
+          mTextArea.setText(e.getMessage());
        }
     }//GEN-LAST:event_mOcrButtonActionPerformed
 
     private void mTrainButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_mTrainButtonActionPerformed
     {//GEN-HEADEREND:event_mTrainButtonActionPerformed
        Image image = retrieveImage();
-       if (image != null)
+       try
        {
           mTextArea.setText(new Trainer(new DesktopPrompter(), image).train());
+          jLabel1.setText("Training Text:");
+       }
+       catch (InvalidImageException e)
+       {
+          //Display image rejection message to the user
+          jLabel1.setText("Error:");
+          mTextArea.setText(e.getMessage());
        }
     }//GEN-LAST:event_mTrainButtonActionPerformed
 

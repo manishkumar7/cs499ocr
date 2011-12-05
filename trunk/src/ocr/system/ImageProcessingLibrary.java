@@ -102,6 +102,7 @@ public class ImageProcessingLibrary
     * @return The processed image.
     */
    public static Image correctSkew(Image pImage)
+      throws InvalidImageException
    {
       Image correct = null;
       double variance = 0;
@@ -154,7 +155,13 @@ public class ImageProcessingLibrary
          diff = Math.abs(prevTest - testAngle);
       }
 
-      System.out.println("Image was skewed " + correctAngle + " degrees");
+      String skewMsg = "Image was skewed " + correctAngle + " degrees";
+      System.out.println(skewMsg);
+
+      if ((correctAngle >= 6) || (correctAngle <= -6))
+      {
+         throw new InvalidImageException(skewMsg);
+      }
 
       return correct;
    }

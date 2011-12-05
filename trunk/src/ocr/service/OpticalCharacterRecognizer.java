@@ -3,6 +3,7 @@ package ocr.service;
 import java.awt.Image;
 import java.util.Collection;
 import ocr.system.ImageProcessingLibrary;
+import ocr.system.InvalidImageException;
 
 /**
  * Extract characters from an image and convert to a String.
@@ -19,37 +20,34 @@ public class OpticalCharacterRecognizer
     * @return The characters extracted from the image.
     */
    public static String extractString(Image pImage)
+      throws InvalidImageException
    {
-      String text = "Error: Image rejected";
+      Collection<Image> characters = Preprocessor.preprocess(pImage);
+      String text = "";
 
-      if (pImage != null)
+      //TODO: Create a thread pool of size 4
+      for (Image character : characters)
       {
-         Collection<Image> characters = Preprocessor.preprocess(pImage);
-         text = "";
-
-         //TODO: Create a thread pool of size 4
-         for (Image character : characters)
+         if (character == ImageProcessingLibrary.NEWLINE_MARK)
          {
-            if (character == ImageProcessingLibrary.NEWLINE_MARK)
-            {
-               text += "\n";
-            }
-            else if (character == ImageProcessingLibrary.SPACE_MARK)
-            {
-               text += " ";
-            }
-            else
-            {
-               FeatureExtractor extractor = new FeatureExtractor(character);
-               extractor.run();
+            text += "\n";
+         }
+         else if (character == ImageProcessingLibrary.SPACE_MARK)
+         {
+            text += " ";
+         }
+         else
+         {
+            FeatureExtractor extractor = new FeatureExtractor(character);
+            extractor.run();
 
-               PatternRecognizer recognizer = new PatternRecognizer(extractor.
-                  getFeaturePoint());
-               recognizer.run();
-               text += recognizer.getCharacter();
-            }
+            PatternRecognizer recognizer = new PatternRecognizer(extractor.
+               getFeaturePoint());
+            recognizer.run();
+            text += recognizer.getCharacter();
          }
       }
+
       return text;
    }
 }

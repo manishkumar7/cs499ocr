@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.Collection;
 import ocr.desktop.ImageDisplayer;
 import ocr.system.ImageProcessingLibrary;
+import ocr.system.InvalidImageException;
 
 /**
  * Converts an image into an array of character images.
@@ -20,7 +21,13 @@ public class Preprocessor
     * @return
     */
    public static Collection<Image> preprocess(Image pImage)
+      throws InvalidImageException
    {
+      if (pImage == null)
+      {
+         throw new InvalidImageException("Null image");
+      }
+      
       ImageDisplayer.displayImage(pImage);
       Image document = ImageProcessingLibrary.threshold(pImage);
       document = ImageProcessingLibrary.correctSkew(document);
