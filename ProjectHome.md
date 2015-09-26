@@ -1,0 +1,1 @@
+Performs OCR with image processing and statistical pattern recognition.
